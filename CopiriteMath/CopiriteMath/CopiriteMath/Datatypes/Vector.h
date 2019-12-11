@@ -464,6 +464,9 @@ public:
 	// Returns a copy of this vector with absolute values in each component.
 	INLINE STVector<Size, Type> Abs() const;
 
+	// Returns the amount of dimensions this vector has.
+	INLINE uint GetVectorSize() const { return Size; }
+
 	// Returns the inputted component of this vector.
 	INLINE Type& GetComponent(const uint& Index);
 
