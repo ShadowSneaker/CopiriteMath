@@ -165,7 +165,7 @@ public:
 	INLINE STVector<Size, Type> operator*(const Type& Value) const;
 
 	// Operator, Returns the result of a multiplication between a value and this vector.
-	INLINE friend STVector<Size, Type> operator*(const Type& Value, const STVector<Size, Element>& Other)
+	INLINE friend STVector<Size, Type> operator*(const Type& Value, const STVector<Size, Type>& Other)
 	{
 		STVector<Size, Type> Result;
 		for (uint i = 0; i < Size; ++i)
@@ -278,7 +278,7 @@ public:
 
 	// Debug diagnostics handle for when a vector contains NaN in any component.
 	// @note - This will set this vector to a vector0 if it contains NaN.
-	INLINE void CheckNaN() const;
+	INLINE void CheckNaN();
 
 	// Check if this vector's components contains NaN.
 	// @return - True if a component contains NaN.
@@ -339,7 +339,7 @@ public:
 	// Calculates the cross product between this vector and another vector.
 	// @param Other - The inputted vector to calculate against.
 	// @return - The resulting vector.
-	INLINE STVector<3, Type> CrossProduct(const STVector<3, Type>& Other) const;
+	INLINE STVector<Size, Type> CrossProduct(const STVector<Size, Type>& Other) const;
 
 	// Calculates the dot product between thsi vector an another vector.
 	// @param Other - The inputted vector to calculate against.
@@ -357,17 +357,296 @@ public:
 	INLINE STVector<Size, Type> Min(const STVector<Size, Type>& Other) const;
 
 	// Normalize the vector.
-	// @param Tolerance - The accuracy towards teh normalization.
-	INLINE void Normalize(flaot Tolerance = MICRO_NUMBER);
+	// @param Tolerance - Minimum square vector length.
+	INLINE void Normalize(float Tolerance = MICRO_NUMBER);
 
 	// Returns true if this vector is almost equal to another vector.
 	// @param Other - The vector to compare with.
 	// @param Threshold - The range in which the other vector can be in.
 	// @return - Returns true if the other vector is within range of this vector.
-	INLINE bool nearlyEqual(const STVector<Size, Type>& Other, const Type& Threshold = MICRO_NUMBER) const;
+	INLINE bool NearlyEqual(const STVector<Size, Type>& Other, const Type& Threshold = MICRO_NUMBER) const;
 
-	// Checks to see if this vector is close to zero based on a range.
-	// @param Range - The 
+	// Checks to see if this vector is a zero vector.
+	// @param Threshold - The range in which this vector can be in.
+	// @return - True if all components in this vector are equal to 0.
+	INLINE bool IsZero(float Threshold = MICRO_NUMBER) const;
+
+	// Powers every component of this vector.
+	// @param Exponent - The amount of times the component will be multiplied.
+	// @return - A copy of this vector after being powered.
+	INLINE STVector<Size, Type> Power(uint Exponent) const;
+
+	// Multiplies this vector by itself.
+	// @return - A copy of this vector doubled.
+	INLINE STVector<Size, Type> Square() const;
+
+	// Adds all of this vector's components together.
+	// @return - The sum of this vector's components.
+	INLINE float GetSize() const;
+
+	// Squares all of this vector's components then adds them together.
+	// @return - The sum of this vector's components multiplied by itself.
+	INLINE float SizeSquared() const;
+
+	// Creates a copy of this vector resized to a different size.
+	// @template NewSize - The size of the new vector to be created.
+	// @param Value - The value to add to the end of the vector (if the new size is larger than the current size).
+	// @return - A copy of this vector resized.
+	template <uint NewSize>
+	INLINE STVector<NewSize, Type> Resize(const Type& Value = 0.0f) const;
+
+	// Rotates around an axis.
+	// @note - Assumes the axis size is equal to 1.
+	// @param AngleDegrees - Angle to rotate (in degrees).
+	// @param Axis - Axis to rotate around.
+	// @return - The rotated vector.
+	inline STVector<3, float> RotateAxis(const float AngleDegrees, const STVector<3, float>& Axis) const;
+
+	// Gets a normalized copy of the vector.
+	// @param Tolerance - Minimum square vector length.
+	// @return - A normalized copy if safe, returns a zero vector otherwise.
+	INLINE STVector<Size, Type> SafeNormal(float Tolerance = MICRO_NUMBER) const;
+
+
+
+	/// Setters
+
+	// Sets all components of this vector2.
+	// @param X - The value to put into the X component.
+	// @param Y - The value to put into the Y component.
+	INLINE void Set(const Type& X, const Type& Y);
+
+	// Sets all components of this vector3.
+	// @param X - The value to put into the X component.
+	// @param Y - The value to put into the Y component.
+	// @param Z - The value to put into the Z component.
+	INLINE void Set(const Type& X, const Type& Y, const Type& Z);
+
+	// Sets all components of this vector4.
+	// @param X - The value to put into the X component.
+	// @param Y - The value to put into the Y component.
+	// @param Z - The value to put into the Z component.
+	// @param W - The value to put into the W component.
+	INLINE void Set(const Type& X, const Type& Y, const Type& Z, const Type& W);
+
+	// Sets the X component to the inputted value.
+	// @param Value - The value to set the X component.
+	INLINE void SetX(const Type& Value);
+
+	// Sets the Y component to the inputted value.
+	// @param Value - The value to set the Y component.
+	INLINE void SetY(const Type& Value);
+
+	// Sets the Z component to the inputted value.
+	// @param Value - The value to set the Z component.
+	INLINE void SetZ(const Type& Value);
+
+	// Sets the W component to the inputted value.
+	// @param Value - The value to set the W component.
+	INLINE void SetW(const Type& Value);
+
+
+
+	/// Getters
+
+	// Returns the highest component in this vector.
+	INLINE Type MaxComp() const;
+
+	// Returns the absolute component with the highest value in this vector.
+	INLINE Type AbsMaxComp() const;
+	
+	// Returns the lowest component in this vector.
+	INLINE Type MinComp() const;
+
+	// Returns the absolute component with the lowest value in this vector.
+	INLINE Type AbsMinComp() const;
+
+	// Returns a copy of this vector with absolute values in each component.
+	INLINE STVector<Size, Type> Abs() const;
+
+	// Returns the inputted component of this vector.
+	INLINE Type& GetComponent(const uint& Index);
+
+	// Returns the inputted component of this vector.
+	INLINE Type GetComponent(const uint& Index) const;
+
+	// Returns the inputted component of this vector.
+	INLINE Type& GetComponent(const EAxis& Axis);
+
+	// Returns the inputted component of this vector.
+	INLINE Type GetComponent(const EAxis& Axis) const;
+
+	// Returns a normalized copy of this vector.
+	INLINE STVector<Size, Type> GetNormal(float Tolerance = MICRO_NUMBER) const;
+
+	// Returns the X component of this vector.
+	INLINE Type& X();
+
+	// Returns the X component of this vector.
+	INLINE Type X() const;
+
+	// Returns the X component of this vector.
+	INLINE Type& GetX();
+
+	// Returns the X component of this vector.
+	INLINE Type GetX() const;
+
+	// Returns the Y component of this vector.
+	INLINE Type& Y();
+
+	// REturns the Y component of this vector.
+	INLINE Type Y() const;
+
+	// Returns the Y component of this vector.
+	INLINE Type& GetY();
+
+	// Returns the Y component of this vector.
+	INLINE Type GetY() const;
+
+	// Returns the Z component of this vector.
+	INLINE Type& Z();
+
+	// Returns the Z component of this vector.
+	INLINE Type Z() const;
+
+	// Returns the Z component of this vector.
+	INLINE Type& GetZ();
+
+	// Returns the Z component of this vector.
+	INLINE Type GetZ() const;
+
+	// Returns the W Component of this vector.
+	INLINE Type& W();
+
+	// Returns the W component of this vector.
+	INLINE Type W() const;
+
+	// Returns the W component of this vector.
+	INLINE Type& GetW();
+
+	// Returns the W component of this vector.
+	INLINE Type GetW() const;
+
+
+
+	/// Statics
+
+	// Returns the dot product between two vectors.
+	// @param V1 - The first vector.
+	// @param V2 - The second vector.
+	// @return - The result of the dot product between the two vectors.
+	static INLINE float DotProduct(const STVector<Size, Type>& V1, const STVector<Size, Type>& V2);
+
+	// Calculates the cross product between two vectors.
+	// @param V1 - The first vector.
+	// @param V2 - The second vector.
+	// @return - The result of the cross product between the two vectors.
+	static INLINE STVector<Size, Type> CrossProduct(const STVector<Size, Type>& V1, const STVector<Size, Type>& V2);
+
+	// Gets the value between two vectors based on a percentage value.
+	// @param Min - The minimum value of the lerp.
+	// @param Max - The maximum value of the lerp.
+	// @param Value - The percentage the lerp should calculate at (between 0 - 1).
+	// @return - The vector at the inputted percentage position between the two inputted vectors.
+	static INLINE STVector<Size, Type> Lerp(const STVector<Size, Type>& Min, const STVector<Size, Type>& Max, float Value);
+
+	// Powers every component of this vector.
+	// @param Vector - The vector to power.
+	// @param Exponent - The amount of times the component will be multiplied.
+	// @return - A copy of this vector after being powered.
+	static INLINE STVector<Size, Type> Power(const STVector<Size, Type>& Vector, uint Exponent);
+
+	// Shorthand of typing Vector{1, 0, 0}.
+	// @note - Vector size must have the X component.
+	static INLINE STVector<Size, Type> Right();
+
+	// Shorthand of typing Vector{-1, 0, 0}.
+	// @note - Vector size must have the X component.
+	static INLINE STVector<Size, Type> Left();
+
+	// Shorthand of typing Vector{0, 1, 0}.
+	// @note - Vector size must have the Y component.
+	static INLINE STVector<Size, Type> Up();
+
+	// Shorthand of typing Vector{0, -1, 0}.
+	// @note - Vector size must have the Y component.
+	static INLINE STVector<Size, Type> Down();
+
+	// Shorthand of typing Vector{0, 0, 1}.
+	// @note - Vector size must have the Z component.
+	static INLINE STVector<Size, Type> Forward();
+
+	// Shorthand of typing Vector{0, 0, -1}.
+	// @note - Vector size must have the Z component.
+	static INLINE STVector<Size, Type> Backward();
+
+	// Returns true if this vector is almost equal to another vector.
+	// @param V1 - The initial vector.
+	// @param V2 - The vector to compare with.
+	// @param Threshold - The range in which the other vector can be in.
+	// @return - Returns true if the other vector is within range of this vector.
+	static INLINE bool NearlyEqual(const STVector<Size, Type>& V1, const STVector<Size, Type>& V2, const Type& Threshold);
+
+	// Creates a vector with the highest values in each dimension between this vector and an inputted vector.
+	// @param V1 - The first vector.
+	// @param V2 - The second vector.
+	// @return - The resulting vector.
+	static INLINE STVector<Size, Type> Max(const STVector<Size, Type>& V1, const STVector<Size, Type>& V2);
+
+	// Returns the highest component in this vector.
+	// @param Vector - The vector to search.
+	// @return - The highest component in the inputted vector.
+	static INLINE Type MaxComp(const STVector<Size, Type>& Vector);
+
+	// Returns the absolute component with the highest value in this vector.
+	// @param Vector - The vector to search.
+	// @return - The highest component in the inputted vector.
+	static INLINE Type AbsMaxComp(const STVector<Size, Type>& Vector);
+
+	// Creates a vector with the lowest values in each dimension between this vector and an inputted vector.
+	// @param V1 - The first vector.
+	// @param V2 - The second vector.
+	// @return - The resulting vector.
+	static INLINE STVector<Size, Type> Min(const STVector<Size, Type>& V1, const STVector<Size, Type>& V2);
+
+	// Returns the lowest component in this vector.
+	// @param Vector - The vector to search.
+	// @return - The lowest component in the inputted vector.
+	static INLINE Type MinComp(const STVector<Size, Type>& Vector);
+
+	// Returns the absolute component with the lowest value in this vector.
+	// @param Vector - The vector to search.
+	// @return - The lowest component in the inputted vector.
+	static INLINE Type AbsMinComp(const STVector<Size, Type>& Vector);
+
+	// Calculates the distance between two vectors.
+	// @param Start - The vector representing the starting position.
+	// @param End - The vector representing the end position.
+	// @return - The distance between the two vectors.
+	static INLINE float Distance(const STVector<Size, Type>& Start, const STVector<Size, Type>& End);
+
+	// Calculates the squared distance between two vectors.
+	// @note - This is faster than Vector::Distance().
+	// @param Start - The vector representing the starting position.
+	// @param End - The vector representing the end position.
+	// @return - The distance between the two vectors.
+	static INLINE float DistanceSquared(const STVector<Size, Type>& Start, const STVector<Size, Type>& End);
+
+	// Creates a new vector by selecting values in the two inputted vectors using a bool value.
+	// @note - true = the value V1, false = the value in V2.
+	// @param V1 - The first vector.
+	// @param V2 - The second vector.
+	// @param Control - A vector of bools which determines which vector component to use in each axis.
+	// @return - Returns a new vector with the selected values.
+	static INLINE STVector<Size, Type> Select(STVector<Size, Type> V1, STVector<Size, Type> V2, STVector<Size, bool> Control);
+
+	// Merges two vectors together based on the inputted axis.
+	// @param V1 - The first vector.
+	// @param V2 - The second vector.
+	// @param A - The axis to initiate the new vector's X and Z components (from the first vector).
+	// @param B - The axis to initiate the new vector's Y and W components (from the second vector).
+	// @return - A new vector4 with the merged values.
+	static INLINE STVector<4, Type> Merge(STVector<4, Type> V1, STVector<4, Type> V2, EAxis A, EAxis B);
 };
 
 
@@ -983,12 +1262,12 @@ INLINE Type STVector<Size, Type>::operator[](const EAxis& Axis) const
 
 
 template <uint Size, typename Type>
-INLINE void STVector<Size, Type>::CheckNaN() const
+INLINE void STVector<Size, Type>::CheckNaN()
 {
 	if (ContainsNaN())
 	{
 		printf("Vector contains NaN\n");
-		*const_cast<Vector<Size, Type>*>(this) = Vector<Size, Type>{ 0.0f };
+		*this = 0.0f;
 	}
 }
 
@@ -1145,3 +1424,620 @@ INLINE STVector<Size, int32> STVector<Size, Type>::ToInt() const
 }
 
 
+template <uint Size, typename Type>
+INLINE STVector<Size, Type> STVector<Size, Type>::CrossProduct(const STVector<Size, Type>& Other) const
+{
+	return *this | Other;
+}
+
+
+template <uint Size, typename Type>
+INLINE float STVector<Size, Type>::DotProduct(const STVector<Size, Type>& Other) const
+{
+	return *this ^ Other;
+}
+
+
+template <uint Size, typename Type>
+INLINE STVector<Size, Type> STVector<Size, Type>::Max(const STVector<Size, Type>& Other) const
+{
+	STVector<Size, Type> Result;
+	for (uint i = 0; i < Size; ++i)
+	{
+		Result[i] = (Data[i] > Other[i]) ? Data[i] : Other[i];
+	}
+	Result.CheckNaN();
+	return Result;
+}
+
+
+template <uint Size, typename Type>
+INLINE STVector<Size, Type> STVector<Size, Type>::Min(const STVector<Size, Type>& Other) const
+{
+	STVector<Size, Type> Result;
+	for (uint i = 0; i < Size; ++i)
+	{
+		Result[i] = (Data[i] < Other[i]) ? Data[i] : Other[i];
+	}
+	Result.CheckNaN();
+	return Result
+}
+
+
+template <uint Size, typename Type>
+INLINE void STVector<Size, Type>::Normalize(float Tolerance)
+{
+	const float SquareSum{ DotProduct(*this) };
+	if (SquareSum > Tolerance)
+	{
+		const float Scale{ TMath::InvSqrt(SquareSum) };
+		for (uint i = 0; i < Size; ++i)
+		{
+			Data[i] *= Scale;
+		}
+	}
+}
+
+
+template <uint Size, typename Type>
+INLINE bool STVector<Size, Type>::NearlyEqual(const STVector<Size, Type>& Other, const Type& Threshold) const
+{
+	for (uint i = 0; i < Size; ++i)
+	{
+		if ((Data[i] < Other[i] - Threshold) || (Data[i] > Other[i] + Threshold)) return false;
+	}
+	return true;
+}
+
+
+template <uint Size, typename Type>
+INLINE bool STVector<Size, Type>::IsZero(float Threshold) const
+{
+	for (uint i = 0; i < Size; ++i)
+	{
+		if (TMath::Abs(Data[i]) > Threshold) return false;
+	}
+	return true;
+}
+
+
+template <uint Size, typename Type>
+INLINE STVector<Size, Type> STVector<Size, Type>::Power(uint Exponent) const
+{
+	STVector<Size, Type> Result{ Data };
+	for (uint i = 0; i < Exponent; ++i)
+	{
+		Result *= Data;
+	}
+	Result.CheckNaN();
+	return Result;
+}
+
+
+template <uint Size, typename Type>
+INLINE STVector<Size, Type> STVector<Size, Type>::Square() const
+{
+	return *this * *this;
+}
+
+
+template <uint Size, typename Type>
+INLINE float STVector<Size, Type>::GetSize() const
+{
+	float Result{ 0.0f };
+	for (uint i = 0; i < Size; ++i)
+	{
+		Result += Data[i];
+	}
+	if (!TMath::IsFinite(Result)) Result = 0.0f;
+	return Result;
+}
+
+
+template <uint Size, typename Type>
+INLINE float STVector<Size, Type>::SizeSquared() const
+{
+	float Result{ 0.0f };
+	for (uint i = 0; i < Size; ++i)
+	{
+		Result += Data[i] * Data[i];
+	}
+	if (!TMath::IsFinite(Result)) Result = 0.0f;
+	return Result;
+}
+
+
+template <uint Size, typename Type>
+template <uint NewSize>
+INLINE STVector<NewSize, Type> STVector<Size, Type>::Resize(const Type& Value) const
+{
+	STVector<NewSize, Type> Result;
+	for (uint i = 0; i < NewSize; ++i)
+	{
+		Result[i] = (i < Size) ? Data[i] : Value;
+	}
+	Result.CheckNaN();
+	return Result;
+}
+
+
+template <uint Size, typename Type>
+inline STVector<3, float> STVector<Size, Type>::RotateAxis(const float AngleDegrees, const STVector<3, float>& Axis) const
+{
+	ASSERT(Size == 3, "Vector size must be 3 in order to use this function.");
+
+	float S;
+	float C;
+	TMath::SinCos(&S, &C, TMath::ToRadians(AngleDegrees));
+
+	const float XX{ Axis[EAxis::X] * Axis[EAxis::X] };
+	const float YY{ Axis[EAxis::Y] * Axis[EAxis::Y] };
+	const float ZZ{ Axis[EAxis::Z] * Axis[EAxis::Z] };
+
+	const float XY{ Axis[EAxis::X] * Axis[EAxis::Y] };
+	const float YZ{ Axis[EAxis::Y] * Axis[EAxis::Z] };
+	const float ZX{ Axis[EAxis::Z] * Axis[EAxis::X] };
+
+	const float XS{ Axis[EAxis::X] * S };
+	const float YS{ Axis[EAxis::X] * S };
+	const float ZS{ Axis[EAxis::X] * S };
+
+	const float OMC{ 1.0f - C };
+
+	return STVector<3, float>
+	{
+		(OMC* XX + C)  * Data[EAxis::X] + (OMC * XY - ZS) * Data[EAxis::Y] + (OMC * ZX + YS) * Data[EAxis::Z],
+		(OMC* XY + ZS) * Data[EAxis::X] + (OMC * YY + C)  * Data[EAxis::Y] + (OMC * YZ - XS) * Data[EAxis::Z],
+		(OMC* ZX - YS) * Data[EAxis::X] + (OMC * YZ + XS) * Data[EAxis::Y] + (OMC * ZZ + C)  * Data[EAxis::Z]
+	};
+}
+
+
+template <uint Size, typename Type>
+INLINE STVector<Size, Type> STVector<Size, Type>::SafeNormal(float Tolerance) const
+{
+	const float SquareSum{ SizeSquared() };
+	if (SquareSum == 1.0f)
+	{
+		return *this;
+	}
+	else if (SquareSum < Tolerance)
+	{
+		return 0.0f;
+	}
+
+	const float Scale{ TMath::InvSqrt(SquareSum) };
+	return *this * Scale;
+}
+
+
+template <uint Size, typename Type>
+INLINE void STVector<Size, Type>::Set(const Type& X, const Type& Y)
+{
+	Data[0] = X;
+	Data[1] = Y;
+	CheckNaN();
+}
+
+
+template <uint Size, typename Type>
+INLINE void STVector<Size, Type>::Set(const Type& X, const Type& Y, const Type& Z)
+{
+	Data[0] = X;
+	Data[1] = Y;
+	Data[3] = Z;
+	CheckNaN();
+}
+
+
+template <uint Size, typename Type>
+INLINE void STVector<Size, Type>::Set(const Type& X, const Type& Y, const Type& Z, const Type& W)
+{
+	Data[0] = X;
+	Data[1] = Y;
+	Data[2] = Z;
+	Data[3] = W;
+	CheckNaN();
+}
+
+
+template <uint Size, typename Type>
+INLINE void STVector<Size, Type>::SetX(const Type& Value)
+{
+	Data[EAxis::X] = Value;
+}
+
+
+template <uint Size, typename Type>
+INLINE void STVector<Size, Type>::SetY(const Type& Value)
+{
+	Data[EAxis::Y] = Value;
+}
+
+
+template <uint Size, typename Type>
+INLINE void STVector<Size, Type>::SetZ(const Type& Value)
+{
+	Data[EAxis::Z] = Value;
+}
+
+
+template <uint Size, typename Type>
+INLINE void STVector<Size, Type>::SetW(const Type& Value)
+{
+	Data[EAxis::W] = Value;
+}
+
+
+template <uint Size, typename Type>
+INLINE Type STVector<Size, Type>::MaxComp() const
+{
+	Type Result{ Data[0] };
+	for (uint i = 1; i < Size; ++i)
+	{
+		if (Data[i] > Result) Result = Data[i];
+	}
+	if (!TMath::IsFinite(Result)) Result = 0.0f;
+	return Result;
+}
+
+
+template <uint Size, typename Type>
+INLINE Type STVector<Size, Type>::AbsMaxComp() const
+{
+	return Abs().MaxComp();
+}
+
+
+template <uint Size, typename Type>
+INLINE Type STVector<Size, Type>::MinComp() const
+{
+	Type Result{ Data[0] };
+	for (uint i = 1; i < Size; ++i)
+	{
+		if (Data[i] < Result) Result = Data[i];
+	}
+	if (!TMath::IsFinite(Result)) Result = 0.0f;
+	return Result;
+}
+
+
+template <uint Size, typename Type>
+INLINE Type STVector<Size, Type>::AbsMinComp() const
+{
+	return Abs().MinComp();
+}
+
+
+template <uint Size, typename Type>
+INLINE STVector<Size, Type> STVector<Size, Type>::Abs() const
+{
+	STVector<Size, Type> Result;
+	for (uint i = 0; i < Size; ++i)
+	{
+		Result[i] = TMath::Abs(Data[i]);
+	}
+	return Result;
+}
+
+
+template <uint Size, typename Type>
+INLINE Type& STVector<Size, Type>::GetComponent(const uint& Index)
+{
+	return Data[Index];
+}
+
+
+template <uint Size, typename Type>
+INLINE Type STVector<Size, Type>::GetComponent(const uint& Index) const
+{
+	return Data[Index];
+}
+
+
+template <uint Size, typename Type>
+INLINE Type& STVector<Size, Type>::GetComponent(const EAxis& Axis)
+{
+	return Data[Axis];
+}
+
+
+template <uint Size, typename Type>
+INLINE Type STVector<Size, Type>::GetComponent(const EAxis& Axis) const
+{
+	return Data[Axis];
+}
+
+
+template <uint Size, typename Type>
+INLINE STVector<Size, Type> STVector<Size, Type>::GetNormal(float Tolerance) const
+{
+	const float SquareSum{ SizeSquared() };
+	if (SquareSum > Tolerance)
+	{
+		const float Scale{ TMath::InvSqrt(SquareSum) };
+		STVector<Size, Type> Result{ *this * Scale };
+		return Result;
+	}
+	return 0.0f;
+}
+
+
+template <uint Size, typename Type>
+INLINE Type& STVector<Size, Type>::X()
+{
+	return Data[EAxis::X];
+}
+
+
+template <uint Size, typename Type>
+INLINE Type STVector<Size, Type>::X() const
+{
+	return Data[EAxis::X];
+}
+
+
+template <uint Size, typename Type>
+INLINE Type& STVector<Size, Type>::GetX()
+{
+	return Data[EAxis::X];
+}
+
+
+template <uint Size, typename Type>
+INLINE Type STVector<Size, Type>::GetX() const
+{
+	return Data[EAxis::X];
+}
+
+template <uint Size, typename Type>
+INLINE Type& STVector<Size, Type>::Y()
+{
+	return Data[EAxis::Y];
+}
+
+
+template <uint Size, typename Type>
+INLINE Type STVector<Size, Type>::Y() const
+{
+	return Data[EAxis::Y];
+}
+
+
+template <uint Size, typename Type>
+INLINE Type& STVector<Size, Type>::GetY()
+{
+	return Data[EAxis::Y];
+}
+
+
+template <uint Size, typename Type>
+INLINE Type STVector<Size, Type>::GetY() const
+{
+	return Data[EAxis::Y];
+}
+
+
+template <uint Size, typename Type>
+INLINE Type& STVector<Size, Type>::Z()
+{
+	return Data[EAxis::Z];
+}
+
+
+template <uint Size, typename Type>
+INLINE Type STVector<Size, Type>::Z() const
+{
+	return Data[EAxis::Z];
+}
+
+
+template <uint Size, typename Type>
+INLINE Type& STVector<Size, Type>::GetZ()
+{
+	return Data[EAxis::Z];
+}
+
+
+template <uint Size, typename Type>
+INLINE Type STVector<Size, Type>::GetZ() const
+{
+	return Data[EAxis::Z];
+}
+
+
+template <uint Size, typename Type>
+INLINE Type& STVector<Size, Type>::W()
+{
+	return Data[EAxis::W];
+}
+
+
+template <uint Size, typename Type>
+INLINE Type STVector<Size, Type>::W() const
+{
+	return Data[EAxis::W];
+}
+
+
+template <uint Size, typename Type>
+INLINE Type& STVector<Size, Type>::GetW()
+{
+	return Data[EAxis::W];
+}
+
+
+template <uint Size, typename Type>
+INLINE Type STVector<Size, Type>::GetW() const
+{
+	return Data[EAxis::W];
+}
+
+
+template <uint Size, typename Type>
+INLINE float STVector<Size, Type>::DotProduct(const STVector<Size, Type>& V1, const STVector<Size, Type>& V2)
+{
+	return V1 ^ V2;
+}
+
+
+template <uint Size, typename Type>
+INLINE STVector<Size, Type> STVector<Size, Type>::CrossProduct(const STVector<Size, Type>& V1, const STVector<Size, Type>& V2)
+{
+	return V1 | V2;
+}
+
+
+template <uint Size, typename Type>
+INLINE STVector<Size, Type> STVector<Size, Type>::Lerp(const STVector<Size, Type>& Min, const STVector<Size, Type>& Max, float Value)
+{
+	return ((Max - Min) * Value) + Min;
+}
+
+
+template <uint Size, typename Type>
+INLINE STVector<Size, Type> STVector<Size, Type>::Power(const STVector<Size, Type>& Vector, uint Exponent)
+{
+	return Vector.Power(Exponent);
+}
+
+
+template <uint Size, typename Type>
+INLINE STVector<Size, Type> STVector<Size, Type>::Right()
+{
+	STVector<Size, Type> Result{ (Type)0.0f });
+	Result[EAxis::X] = (Type)1.0f;
+	return Result;
+}
+
+
+template <uint Size, typename Type>
+INLINE STVector<Size, Type> STVector<Size, Type>::Left()
+{
+	STVector<Size, Type> Result{ (Type)0.0f });
+	Result[EAxis::X] = (Type)-1.0f;
+	return Result;
+}
+
+
+template <uint Size, typename Type>
+INLINE STVector<Size, Type> STVector<Size, Type>::Up()
+{
+	STVector<Size, Type> Result{ (Type)0.0f });
+	Result[EAxis::Y] = (Type)1.0f;
+	return Result;
+}
+
+
+template <uint Size, typename Type>
+INLINE STVector<Size, Type> STVector<Size, Type>::Down()
+{
+	STVector<Size, Type> Result{ (Type)0.0f });
+	Result[EAxis::Y] = (Type)-1.0f;
+	return Result;
+}
+
+
+template <uint Size, typename Type>
+INLINE STVector<Size, Type> STVector<Size, Type>::Forward()
+{
+	STVector<Size, Type> Result{ (Type)0.0f });
+	Result[EAxis::Z] = (Type)1.0f;
+	return Result;
+}
+
+
+template <uint Size, typename Type>
+INLINE STVector<Size, Type> STVector<Size, Type>::Backward()
+{
+	STVector<Size, Type> Result{ (Type)0.0f });
+	Result[EAxis::Z] = (Type)-1.0f;
+	return Result;
+}
+
+
+template <uint Size, typename Type>
+INLINE bool STVector<Size, Type>::NearlyEqual(const STVector<Size, Type>& V1, const STVector<Size, Type>& V2, const Type& Threshold)
+{
+	return V1.NearlyEqual(V2, Threshold);
+}
+
+
+template <uint Size, typename Type>
+INLINE STVector<Size, Type> STVector<Size, Type>::Max(const STVector<Size, Type>& V1, const STVector<Size, Type>& V2)
+{
+	return V1.Max(V2);
+}
+
+
+template <uint Size, typename Type>
+INLINE Type STVector<Size, Type>::MaxComp(const STVector<Size, Type>& Vector)
+{
+	return Vector.MaxComp();
+}
+
+
+template <uint Size, typename Type>
+INLINE Type STVector<Size, Type>::AbsMaxComp(const STVector<Size, Type>& Vector)
+{
+	return Vector.AbsMaxComp();
+}
+
+
+template <uint Size, typename Type>
+INLINE STVector<Size, Type> STVector<Size, Type>::Min(const STVector<Size, Type>& V1, const STVector<Size, Type>& V2)
+{
+	return V1.Min(V2);
+}
+
+
+template <uint Size, typename Type>
+INLINE Type STVector<Size, Type>::MinComp(const STVector<Size, Type>& Vector)
+{
+	return Vector.MinComp();
+}
+
+
+template <uint Size, typename Type>
+INLINE Type STVector<Size, Type>::AbsMinComp(const STVector<Size, Type>& Vector)
+{
+	return Vector.AbsMinComp();
+}
+
+
+template <uint Size, typename Type>
+INLINE float STVector<Size, Type>::Distance(const STVector<Size, Type>& Start, const STVector<Size, Type>& End)
+{
+	STVector<Size, Type> Delta{ Start - End };
+	return TMath::Sqrt(Delta.DotProduct(Delta));
+}
+
+
+template <uint Size, typename Type>
+INLINE float STVector<Size, Type>::DistanceSquared(const STVector<Size, Type>& Start, const STVector<Size, Type>& End)
+{
+	STVector<Size, Type> Delta{ Start - End };
+	return Delta.DotProduct(Delta);
+}
+
+
+template <uint Size, typename Type>
+INLINE STVector<Size, Type> STVector<Size, Type>::Select(STVector<Size, Type> V1, STVector<Size, Type> V2, STVector<Size, bool> Control)
+{
+	STVector<Size, Type> Result;
+	for (uint i = 0; i < Size; ++i)
+	{
+		Result[i] = ((Control[i]) ? V1[i] : V2[i]);
+	}
+	Result.CheckNaN();
+	return Result;
+}
+
+
+template <uint Size, typename Type>
+INLINE STVector<4, Type> STVector<Size, Type>::Merge(STVector<4, Type> V1, STVector<4, Type> V2, EAxis A, EAxis B)
+{
+	STVector<4, Type> Result{ V1[A], V2[A], V1[A], V2[B] };
+	Result.CheckNaN();
+	return Result;
+}
