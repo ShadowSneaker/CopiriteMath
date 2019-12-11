@@ -278,6 +278,7 @@ public:
 
 	// Debug diagnostics handle for when a vector contains NaN in any component.
 	// @note - This will set this vector to a vector0 if it contains NaN.
+	INLINE void CheckNaN();
 
 	// Check if this vector's components contains NaN.
 	// @return - True if a component contains NaN.
