@@ -151,14 +151,22 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="CopiriteMath\Datatypes\Matrix.h" />
+    <ClInclude Include="CopiriteMath\Datatypes\Quaternion.h" />
+    <ClInclude Include="CopiriteMath\Datatypes\Transform.h" />
     <ClInclude Include="CopiriteMath\Datatypes\Vector.h" />
     <ClInclude Include="CopiriteMath\GlobalValues.h" />
+    <ClInclude Include="CopiriteMath\MathStatics.h" />
+    <ClInclude Include="CopiriteMath\Random.h" />
     <ClInclude Include="CopiriteMath\Utility.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CopiriteMath.cpp" />
+    <ClCompile Include="CopiriteMath\Datatypes\Quaternion.cpp" />
+    <ClCompile Include="CopiriteMath\MathStatics.cpp" />
+    <ClCompile Include="CopiriteMath\Random.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

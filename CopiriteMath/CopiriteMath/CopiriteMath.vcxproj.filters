@@ -30,12 +30,36 @@
     <ClInclude Include="CopiriteMath\GlobalValues.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="CopiriteMath\MathStatics.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CopiriteMath\Datatypes\Matrix.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CopiriteMath\Datatypes\Transform.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CopiriteMath\Datatypes\Quaternion.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CopiriteMath\Random.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CopiriteMath.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="pch.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CopiriteMath\MathStatics.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CopiriteMath\Datatypes\Quaternion.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CopiriteMath\Random.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
