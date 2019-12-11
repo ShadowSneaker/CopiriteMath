@@ -101,6 +101,176 @@ public:
 
 
 	/// Operators
+
+	// Operator, Returns teh result of an addition between this vector and another vector.
+	template <uint Size2, typename Type2>
+	INLINE STVector<Size, Type> operator+(const STVector<Size2, Type2>& Other) const;
+
+	// Operator, Returns the result of an addition between this vector and a value.
+	INLINE STVector<Size, Type> operator+(const Type& Value) const;
+
+	// Operator, Returns the result of an addition between a value and this vector.
+	INLINE friend STVector<Size, Type> operator+(const Type& Value, const STVector<Size, Type>& Other)
+	{
+		Vector<Size, Type> Result;
+		for (uint i = 0; i < Size; ++i)
+		{
+			Result[i] = Value + Other[i];
+		}
+		Result.CheckNaN();
+		return Result;
+	}
+
+	// Operator, Sets this vector's values with the result of an addition between this vector and another vector.
+	template <uint Size2, typename Type2>
+	INLINE STVector<Size, Type> operator+=(const STVector<Size2, Type2>& Other);
+
+	//Operator, Sets this vector's values with the result of an addition between this vector and a value.
+	INLINE STVector<Size, Type> operator+=(const Type& Value);
+
+	// Operator, Returns the result of a subtraction between this vector and another vector.
+	template <uint Size2, typename Type2>
+	INLINE STVector<Size, Type> operator-(const STVector<Size2, Type2>& Other) const;
+
+	// Operator, Returns the result of a subtraction between this vector and a value.
+	INLINE STVector<Size, Type> operator-(const Type& Value) const;
+
+	// Operator, Returns the result of a subtraction between a value and this vector.
+	INLINE friend STVector<Size, Type> operator-(const Type& Value, const STVector<Size, Type>& Other)
+	{
+		STVector<Size, Type> Result;
+		for (uint i = 0; i < Size; ++i)
+		{
+			Result[i] = Value - Other[i];
+		}
+		Result.CheckNaN();
+		return Result;
+	}
+
+	// Operator, Returns the contents of this vector but negative.
+	INLINE STVector<Size, Type> operator-() const;
+
+	// Operator, Sets this vector's values with the result of a subtraction between this vector and another vector.
+	template <uint Size2, typename Type2>
+	INLINE STVector<Size, Type> operator-=(const STVector<Size2, Type2>& Other);
+
+	// Operator, Sets this vector's values with the result of a subtraction between this vector and a value.
+	INLINE STVector<Size, Type> operator-=(const Type& Value);
+
+	// Operator, Returns the result of a multiplication between this vector and another vector.
+	template <uint Size2, typename Type2>
+	INLINE STVector<Size, Type> operator*(const STVector<Size2, Type2>& Other) const;
+
+	// Operator, Returns the result of a multiplication between this vector and a value.
+	INLINE STVector<Size, Type> operator*(const Type& Value) const;
+
+	// Operator, Returns the result of a multiplication between a value and this vector.
+	INLINE friend STVector<Size, Type> operator*(const Type& Value, const STVector<Size, Element>& Other)
+	{
+		STVector<Size, Type> Result;
+		for (uint i = 0; i < Size; ++i)
+		{
+			Result[i] = Value * Other[i];
+		}
+		Result.CheckNaN();
+		return Result;
+	}
+
+	// Operator, Sets this vector's values with the result of a multiplication between this vector and another vector.
+	template <uint Size2, typename Type2>
+	INLINE STVector<Size, Type> operator*=(const STVector<Size2, Type2>& Other);
+
+	// Operator, Sets this vector's values with the result of a multiplication between this vector and a value.
+	INLINE STVector<Size, Type> operator*=(const Type& Value);
+
+	// Operator, Returns the result of a division between this vector and another vector.
+	template <uint Size2, typename Type2>
+	INLINE STVector<Size, Type> operator/(const STVector<Size2, Type2>& Other) const;
+
+	// Operator, Returns the result of a division between this vector and a value.
+	INLINE STVector<Size, Type> operator/(const Type& Value) const;
+
+	// Operator, Returns the result of a division between a value and this vector.
+	INLINE friend STVector<Size, Type> operator/(const Type& Value, const STVector<Size, Type>& Other)
+	{
+		STVector<Size, Type> Result;
+		for (uint i = 0; i < Size; ++i)
+		{
+			Result[i] = Value / Other[i];
+		}
+		Result.CheckNaN();
+		return Result;
+	}
+
+	// Operator, Sets this vector's values with the result of a division between this vector and another vector.
+	template <uint Size2, typename Type2>
+	INLINE STVector<Size, Type> operator/=(const STVector<Size2, Type2>& Other);
+
+	// Operator, Sets this vector's values with the result of a division between this vector and a value.
+	INLINE STVector<Size, Type> operator/=(const Type& Value);
+
+	// Operator, Increments all the components of this vector by 1.
+	INLINE STVector<Size, Type> operator++();
+
+	// Operator, Decrements all the components of this vector by 1.
+	INLINE STVector<Size, Type> operator--();
+
+	// Operator, Assigns all components to a value.
+	INLINE STVector<Size, Type> operator=(const Type& Value);
+
+	// Operator, Calculates the cross product between this vector and another vector.
+	INLINE STVector<Size, Type> operator|(const STVector<Size, Type>& Other) const;
+
+	// Operator, Calculates the dot product between this vector and another vector.
+	INLINE Type operator^(const STVector<Size, Type>& Other) const;
+
+	// Operator, Tests if each component in this vector is greater than the corosponding component in another vector.
+	INLINE bool operator>(const STVector<Size, Type>& Other) const;
+
+	// Operator, Tests if all components in this vector is greater than a value.
+	INLINE bool operator>(const Type& Value) const;
+
+	// Operator, Tests if each component in this vector is greater than or equal to the corosponding component in another vector.
+	INLINE bool operator>=(const STVector<Size, Type>& Other) const;
+
+	// Operator, Tests if all components in this vector is greater than or equal to a value.
+	INLINE bool operator>=(const Type& Value) const;
+
+	// Operator, Tests if each component in this vector is less than the corosponding component in another vector.
+	INLINE bool operator<(const STVector<Size, Type>& Other) const;
+
+	// Operator, Tests if all components in this vector is less than a vlue.
+	INLINE bool operator<(const Type& Value) const;
+
+	// Operator, Tests if each component in this vector is less than or equal to the corosponding component in another vector.
+	INLINE bool operator<=(const STVector<Size, Type>& Other) const;
+
+	// Operator, Tests if all components in this vector is less than or equal to a value.
+	INLINE bool operator<=(const Type& Value) const;
+
+	// Operator, Tests if each component in this vector is equal to the corosponding component in another vector.
+	INLINE bool operator==(const STVector<Size, Type>& Other) const;
+
+	// Operator, Tests if all the components of this vector is equal to a value.
+	INLINE bool operator==(const Type& Value) const;
+
+	// Operator, Tests if each component in this vector is not equal to the corosponding component in another vector.
+	INLINE bool operator!=(const STVector<Size, Type>& Other) const;
+
+	// Operator, Tests if all the components of this vector is not equal to a value.
+	INLINE bool operator!=(const Type& Value) const;
+
+	// Operator, Returns the vector component value at the given index.
+	INLINE Type& operator[](const uint& Index);
+
+	// Operator, Returns the vector component value at the given index.
+	INLINE Type operator[](const uint& Index) const;
+
+	// Operator, Returns the vector component value at the given axis.
+	INLINE Type& operator[](const EAxis& Axis);
+
+	// Operator, Returns the vector component value at the given axis.
+	INLINE Type operator[](const EAxis& Axis) const;
 };
 
 
@@ -262,4 +432,153 @@ STVector<Size, Type>::STVector(STVector<Size2, Type2> Other, Type Flood)
 	{
 		Data[i] = Type((i < Size2) ? Other[i] : Flood);
 	}
+}
+
+
+template <uint Size, typename Type>
+template <uint Size2, typename Type2>
+INLINE STVector<Size, Type> STVector<Size, Type>::operator+(const STVector<Size2, Type2>& Other) const
+{
+	uint Count{ (Size < Size2) ? Size : Size2 };
+	STVector<Size, Type> Result;
+	for (uint i = 0; i < Count; ++i)
+	{
+		Result[i] = Data[i] + (Type)Other[i];
+	}
+	Result.CheckNaN();
+	return Result;
+}
+
+
+template <uint Size, typename Type>
+INLINE STVector<Size, Type> STVector<Size, Type>::operator+(const Type& Value) const
+{
+	STVector<Size, Type> Result;
+	for (uint i = 0; i < Size; ++i)
+	{
+		Result[i] = Data[i] + Value;
+	}
+	Result.CheckNaN();
+	return Result;
+}
+
+
+template <uint Size, typename Type>
+template <uint Size2, typename Type2>
+INLINE STVector<Size, Type> STVector<Size, Type>::operator+=(const STVector<Size2, Type2>& Other)
+{
+	uint Count{ (Size < Size2) ? Size : Size2 };
+	for (uint i = 0; i < Count; ++i)
+	{
+		Data[i] += (Type)Other[i];
+	}
+	CheckNaN();
+	return *this;
+}
+
+
+template <uint Size, typename Type>
+INLINE STVector<Size, Type> STVector<Size, Type>::operator+=(const Type& Value)
+{
+	for (uint i = 0; i < Size; ++i)
+	{
+		Data[i] += Value;
+	}
+	CheckNaN();
+	return *this;
+}
+
+
+template <uint Size, typename Type>
+template <uint Size2, typename Type2>
+INLINE STVector<Size, Type> STVector<Size, Type>::operator-(const STVector<Size2, Type2>& Other) const
+{
+	uint Count{ (Size < Size2) ? Size : Size2 };
+	STVector<Size, Type> Result;
+	for (uint i = 0; i < Count; ++i)
+	{
+		Result[i] = Data[i] - Other[i];
+	}
+	Result.CheckNaN();
+	return Result;
+}
+
+
+template <uint Size, typename Type>
+INLINE STVector<Size, Type> STVector<Size, Type>::operator-(const Type& Value) const
+{
+	STVector<Size, Type> Result;
+	for (uint i = 0; i < Size; ++i)
+	{
+		Result[i] = Data[i] - Value;
+	}
+	Result.CheckNaN();
+	return Result;
+}
+
+
+template <uint Size, typename Type>
+INLINE STVector<Size, Type> STVector<Size, Type>::operator-() const
+{
+	STVector<Size, Type> Result;
+	for (uint i = 0; i < Size; ++i)
+	{
+		Result[i] = -Data[i];
+	}
+	Result.CheckNaN();
+	return Result;
+}
+
+
+template <uint Size, typename Type>
+template <uint Size2, typename Type2>
+INLINE STVector<Size, Type> STVector<Size, Type>::operator-=(const STVector<Size2, Type2>& Other)
+{
+	uint Count{ (Size < Size2) ? Size : Size2 };
+	for (uint i = 0; i < Count; ++i)
+	{
+		Data[i] -= Other[i];
+	}
+	CheckNaN();
+	return *this;
+}
+
+
+template <uint Size, typename Type>
+INLINE STVector<Size, Type> STVector<Size, Type>::operator-=(const Type& Value)
+{
+	for (uint i = 0; i < Size; ++i)
+	{
+		Data[i] -= Value;
+	}
+	CheckNaN();
+	return *this;
+}
+
+
+template <uint Size, typename Type>
+template <uint Size2, typename Type2>
+INLINE STVector<Size, Type> STVector<Size, Type>::operator*(const STVector<Size2, Type2>& Other) const
+{
+	uint Count{ (Size < Size2) ? Size : Size2 };
+	STVector<Size, Type> Result;
+	for (uint i = 0; i < Count; ++i)
+	{
+		Result[i] = Data[i] * Other[i];
+	}
+	Result.CheckNaN();
+	return Result;
+}
+
+
+template <uint Size, typename Type>
+INLINE STVector<Size, Type> STVector<Size, Type>::operator*(const Type& Value) const
+{
+	STVector<Size, Type> Result;
+	for (uint i = 0; i < Size; ++i)
+	{
+		Result[i] = Data[i] * Value;
+	}
+	Result.CheckNaN();
+	return Result;
 }
