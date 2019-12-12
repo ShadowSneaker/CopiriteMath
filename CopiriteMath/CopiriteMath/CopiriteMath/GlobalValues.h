@@ -12,7 +12,7 @@
 
 
 typedef unsigned int uint;
-typedef bool byte;
+typedef bool Byte;
 typedef signed char int8;
 typedef short int16;
 typedef int int32;

@@ -6,7 +6,8 @@ class TGraph :public TMathCore
 {
 
 
-
+	// Finds the area beneath a curve.
+	// @note - Increasing the StepCount increases accuracy but slows the calculation down.
 	// @return - The area of the curve.
 	template <typename Type>
 	static Type Integration(Type Start, Type End, uint StepCount, Type(*Function)(Type))
