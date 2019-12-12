@@ -1,6 +1,6 @@
 #pragma once
 #include "../GlobalValues.h"
-#include "../MathStatics.h"
+#include "../Statics/MathStatics.h"
 
 
 // Other libraries (if included)

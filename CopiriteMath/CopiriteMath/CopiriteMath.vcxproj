@@ -157,16 +157,18 @@
     <ClInclude Include="CopiriteMath\Datatypes\Vector.h" />
     <ClInclude Include="CopiriteMath\GlobalValues.h" />
     <ClInclude Include="CopiriteMath\Math.h" />
-    <ClInclude Include="CopiriteMath\MathStatics.h" />
+    <ClInclude Include="CopiriteMath\Statics\MathCore.h" />
+    <ClInclude Include="CopiriteMath\Statics\MathStatics.h" />
     <ClInclude Include="CopiriteMath\Random.h" />
+    <ClInclude Include="CopiriteMath\Statics\TGraph.h" />
     <ClInclude Include="CopiriteMath\Utility.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CopiriteMath\Datatypes\Quaternion.cpp" />
     <ClCompile Include="CopiriteMath\Datatypes\Transform.cpp" />
     <ClCompile Include="CopiriteMath\Math.cpp" />
-    <ClCompile Include="CopiriteMath\Source.cpp" />
-    <ClCompile Include="CopiriteMath\MathStatics.cpp" />
+    <ClCompile Include="CopiriteMath\Statics\MathCore.cpp" />
+    <ClCompile Include="CopiriteMath\Statics\MathStatics.cpp" />
     <ClCompile Include="CopiriteMath\Random.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

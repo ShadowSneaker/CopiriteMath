@@ -1,5 +1,5 @@
 #include "DataTypes/Vector.h"
-#include "MathStatics.h"
+#include "Statics/MathStatics.h"
 
 #include <random>
 #include <time.h>

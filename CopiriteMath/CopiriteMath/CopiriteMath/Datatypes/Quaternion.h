@@ -1,6 +1,6 @@
 #pragma once
 #include "Vector.h"
-#include "../MathStatics.h"
+#include "../Statics/MathStatics.h"
 
 
 

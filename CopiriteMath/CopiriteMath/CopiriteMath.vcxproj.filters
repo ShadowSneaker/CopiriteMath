@@ -24,9 +24,6 @@
     <ClInclude Include="CopiriteMath\GlobalValues.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CopiriteMath\MathStatics.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="CopiriteMath\Datatypes\Matrix.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -42,24 +39,33 @@
     <ClInclude Include="CopiriteMath\Math.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="CopiriteMath\Statics\MathStatics.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CopiriteMath\Statics\MathCore.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CopiriteMath\Statics\TGraph.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="CopiriteMath\MathStatics.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="CopiriteMath\Datatypes\Quaternion.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="CopiriteMath\Random.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CopiriteMath\Source.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="CopiriteMath\Math.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="CopiriteMath\Datatypes\Transform.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CopiriteMath\Statics\MathStatics.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CopiriteMath\Statics\MathCore.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
