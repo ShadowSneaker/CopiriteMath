@@ -133,7 +133,7 @@ public:
 	{
 		if (ContainsNaN())
 		{
-			printf("Quaternion contains NaN");
+			//printf("Quaternion contains NaN");
 			*const_cast<Quaternion<Type>*>(this) = Quaternion<Type>::Identity;
 		}
 	}

@@ -1,6 +1,5 @@
 #pragma once
 #include "Transform.h"
-#include "../MathStatics.h"
 
 #include <cassert>
 
@@ -281,7 +280,7 @@ public:
 	// Converts an inputted vector to a matrix.
 	// @param Vec - The vector to convert.
 	// @return - The resulting matrix from the vector.
-	static INLINE SMatrix<1, Rows, Type> ToMatrix(STVector<Rows> Vec)
+	static INLINE SMatrix<1, Rows, Type> ToMatrix(STVector<Rows, float> Vec)
 	{
 		SMatrix<1, Rows, Type> Result;
 		for (uint i = 0; i < Rows; ++i)
@@ -1405,7 +1404,7 @@ INLINE SMatrix3 SMatrix3::ToTranslation(const SVector& Translation)
 	Identity();
 	for (uint i = 0; i < GetRowCount(); ++i)
 	{
-		Data[EAxis::Z][i] = Translation[i];
+		Data[2][i] = Translation[i];
 	}
 	return *this;
 }
@@ -1601,7 +1600,7 @@ INLINE STransform SMatrix3::GetTransform() const
 
 INLINE SVector SMatrix3::GetLocation() const
 {
-	return Data[EAxis::Z];
+	return Data[2];
 }
 
 
@@ -2528,7 +2527,7 @@ INLINE SMatrix4 SMatrix4::ToTranslation(const SVector4& Translation)
 	Identity();
 	for (uint i = 0; i < GetRowCount(); ++i)
 	{
-		Data[EAxis::W][i] = Translation[i];
+		Data[3][i] = Translation[i];
 	}
 	return *this;
 }
@@ -2988,7 +2987,7 @@ INLINE SQuaternion SMatrix4::GetRotation() const
 	return Result;*/
 
 	// If the matrix is NULL, return Identity quaternion. Additionally if any of the Axis equals 0, then a rotation can't be made.
-	if (GetScaledAxis(EAxis::X).IsZero() || GetScaledAxis(EAxis::Y).IsZero() || GetScaledAxis(EAxis::Z).IsZero())
+	/*if (GetScaledAxis(EAxis::X).IsZero() || GetScaledAxis(EAxis::Y).IsZero() || GetScaledAxis(EAxis::Z).IsZero())
 	{
 		return SQuaternion::Identity;
 	}
@@ -3040,11 +3039,11 @@ INLINE SQuaternion SMatrix4::GetRotation() const
 		Result.W = QT[3];
 		Result.CheckNaN();
 	}
-	return Result;
+	return Result;*/
 
 	// http://www.iri.upc.edu/files/scidoc/2068-Accurate-Computation-of-Quaternions-from-Rotation-Matrices.pdf
 
-	/*SQuaternion Quat;
+	SQuaternion Quat;
 	float R22{ Data[2][2] };
 	if (R22 <= 0.0f)
 	{
@@ -3092,7 +3091,7 @@ INLINE SQuaternion SMatrix4::GetRotation() const
 			Quat.W = FourWSqr * Inv4w;
 		}
 	}
-	return Quat;*/
+	return Quat;
 }
 
 

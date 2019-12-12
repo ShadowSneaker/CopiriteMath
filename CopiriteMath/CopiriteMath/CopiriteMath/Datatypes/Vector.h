@@ -1,6 +1,6 @@
 #pragma once
 #include "../GlobalValues.h"
-
+#include "../MathStatics.h"
 
 
 // Other libraries (if included)
@@ -15,10 +15,10 @@
 // Used to easily access values in a vector.
 enum EAxis
 {
-	X = 0x1,		// The X axis.
-	Y = 0x2,		// The Y axis.
-	Z = 0x3,		// The Z axis.
-	W = 0x4		// The W axis.
+	X = 0x0,		// The X axis.
+	Y = 0x1,		// The Y axis.
+	Z = 0x2,		// The Z axis.
+	W = 0x3			// The W axis.
 };
 
 
@@ -33,7 +33,7 @@ private:
 	/// Properties
 
 	// Stores all elements of this vector.
-	Type Data[Size];
+	Type Data[Size]{ 0.0f };
 
 
 public:
@@ -49,13 +49,13 @@ public:
 	// Constructor, Initiates a vector2 using 2 values.
 	// @param InX - The value used to initialize this vector's X component.
 	// @param InY - The value used to initialize this vector's Y component.
-	INLINE VECTORCALL STVector<Size, Type>(Type InX, Type InY);
+	INLINE STVector<Size, Type>(Type InX, Type InY);
 
 	// Constructor, Initiates a vector3 using 3 values.
 	// @param InX - The value used to initialize this vector's X component.
 	// @param InY - The value used to initialize this vector's Y component.
 	// @param InZ - The value used to initialize this vector's Z component.
-	INLINE VECTORCALL STVector<Size, Type>(Type InX, Type InY, Type InZ);
+	INLINE STVector<Size, Type>(Type InX, Type InY, Type InZ);
 
 	// Constructor, Initiates a vector3 using a 2d vector and a value.
 	// @param InV - The vector2 used to initiate this vector's X and Y components.
@@ -67,7 +67,7 @@ public:
 	// @param InY - The value used to initialize this vector's Y component.
 	// @param InZ - The value used to initialize this vector's Z component.
 	// @param InW - The value used to initialize this vector's W component.
-	INLINE VECTORCALL STVector<Size, Type>(Type InX, Type InY, Type InZ, Type InW);
+	INLINE STVector<Size, Type>(Type InX, Type InY, Type InZ, Type InW);
 
 	// Constructor, Initiates a vector4 using 2 vector2s.
 	// @param V1 - The vector2 used to initialize this vector's X and Y components.
@@ -83,12 +83,12 @@ public:
 	// Constructor, Initiates a vector4 using a 3D vector and a value.
 	// @param V - The vector3 used to initialize this vector's X, Y and Z components.
 	// @param InW - The value used to initialize this vector's W component.
-	INLINE VECTORCALL STVector<Size, Type>(STVector<3, Type> V, Type InW);
+	INLINE STVector<Size, Type>(STVector<3, Type> V, Type InW);
 
 	// Constructor, Initializes this vector with an array of values.
 	// @note - The array size must be the same size as this vector.
 	// @param Values - The array to initialize all components.
-	INLINE VECTORCALL STVector<Size, Type>(Type Values[Size]);
+	INLINE STVector<Size, Type>(Type Values[Size]);
 
 	// Constructor, Initializes this vector with the components of another vector.
 	// @template Size2 - The size of the other vector.
@@ -112,7 +112,7 @@ public:
 	// Operator, Returns the result of an addition between a value and this vector.
 	INLINE friend STVector<Size, Type> operator+(const Type& Value, const STVector<Size, Type>& Other)
 	{
-		Vector<Size, Type> Result;
+		STVector<Size, Type> Result;
 		for (uint i = 0; i < Size; ++i)
 		{
 			Result[i] = Value + Other[i];
@@ -725,7 +725,7 @@ STVector<Size, Type>::STVector(Type Value)
 
 
 template <uint Size, typename Type>
-VECTORCALL STVector<Size, Type>::STVector(Type InX, Type InY)
+STVector<Size, Type>::STVector(Type InX, Type InY)
 {
 	ASSERT(Size == 2, "Error: Illigal use of constructor. Is the vector the correct size?");
 	Data[0] = InX;
@@ -734,7 +734,7 @@ VECTORCALL STVector<Size, Type>::STVector(Type InX, Type InY)
 
 
 template <uint Size, typename Type>
-VECTORCALL STVector<Size, Type>::STVector(Type InX, Type InY, Type InZ)
+STVector<Size, Type>::STVector(Type InX, Type InY, Type InZ)
 {
 	ASSERT(Size == 3, "Error: Illigal use of constructor. Is the vector the correct size?");
 	Data[0] = InX;
@@ -754,7 +754,7 @@ STVector<Size, Type>::STVector(STVector<2, Type> V, Type InZ)
 
 
 template <uint Size, typename Type>
-VECTORCALL STVector<Size, Type>::STVector(Type InX, Type InY, Type InZ, Type InW)
+STVector<Size, Type>::STVector(Type InX, Type InY, Type InZ, Type InW)
 {
 	ASSERT(Size == 4, "Error: Illigal use of constructor. Is the vector the correct size?");
 	Data[0] = InX;
@@ -790,15 +790,15 @@ template <uint Size, typename Type>
 STVector<Size, Type>::STVector(STVector<3, Type> V, Type InW)
 {
 	ASSERT(Size == 4, "Error: Illigal use of constructor. Is the vector the correct size?");
-	Data[0] = V1[0];
-	Data[1] = V1[1];
-	Data[2] = V1[2];
+	Data[0] = V[0];
+	Data[1] = V[1];
+	Data[2] = V[2];
 	Data[3] = InW;
 }
 
 
 template <uint Size, typename Type>
-VECTORCALL STVector<Size, Type>::STVector(Type Values[Size])
+STVector<Size, Type>::STVector(Type Values[Size])
 	:Data{ Values }
 {}
 
@@ -1008,7 +1008,7 @@ template <uint Size, typename Type>
 INLINE STVector<Size, Type> STVector<Size, Type>::operator/(const Type& Value) const
 {
 	STVector<Size, Type> Result;
-	for (uint i = 0; i < Count; ++i)
+	for (uint i = 0; i < Size; ++i)
 	{
 		Result[i] = Data[i] / Value;
 	}
@@ -1083,9 +1083,9 @@ template <uint Size, typename Type>
 INLINE STVector<Size, Type> STVector<Size, Type>::operator|(const STVector<Size, Type>& Other) const
 {
 	STVector<Size, Type> Result{ 0.0f };
-	Result[EAxis::X] = (Data[EAxis::Y] * Other[EAxis::Z) - (Data[EAxis::Z] * Other[EAxis::Y]);
-	Result[EAxis::Y] = (Data[EAxis::Z] * Other[EAxis::X) - (Data[EAxis::X] * Other[EAxis::Z]);
-	Result[EAxis::Z] = (Data[EAxis::X] * Other[EAxis::Y) - (Data[EAxis::Y] * Other[EAxis::X]);
+	Result[EAxis::X] = (Data[EAxis::Y] * Other[EAxis::Z]) - (Data[EAxis::Z] * Other[EAxis::Y]);
+	Result[EAxis::Y] = (Data[EAxis::Z] * Other[EAxis::X]) - (Data[EAxis::X] * Other[EAxis::Z]);
+	Result[EAxis::Z] = (Data[EAxis::X] * Other[EAxis::Y]) - (Data[EAxis::Y] * Other[EAxis::X]);
 	Result.CheckNaN();
 	return Result;
 }
@@ -1182,7 +1182,7 @@ INLINE bool STVector<Size, Type>::operator<=(const STVector<Size, Type>& Other) 
 
 
 template <uint Size, typename Type>
-INLINE bool STVector<Size, Type>::operator<=(const Type& Other) const
+INLINE bool STVector<Size, Type>::operator<=(const Type& Value) const
 {
 	for (uint i = 0; i < Size; ++i)
 	{
@@ -1219,7 +1219,7 @@ INLINE bool STVector<Size, Type>::operator!=(const STVector<Size, Type>& Other) 
 {
 	for (uint i = 0; i < Size; ++i)
 	{
-		if (Data[i] == Value) return false;
+		if (Data[i] == Other[i]) return false;
 	}
 	return true;
 }
@@ -1269,7 +1269,7 @@ INLINE void STVector<Size, Type>::CheckNaN()
 {
 	if (ContainsNaN())
 	{
-		printf("Vector contains NaN\n");
+		//printf("Vector contains NaN\n");
 		*this = 0.0f;
 	}
 }
@@ -1350,8 +1350,10 @@ template <uint Size, typename Type>
 INLINE STVector<3, float> STVector<Size, Type>::Rotation() const
 {
 	ASSERT(Size >= 3, "Vector must have 3 or more dimenions to do this conversion.");
+
+	STVector<3, float> Result;
 	Result[EAxis::Y] = TO_DEGREES(TMath::ATan2(Data[EAxis::Y], Data[EAxis::X]));
-	Result[EAxis::X] = TO_DEGREES(TMath::ATan2(Data[EAxis::Z], TMath::Sqrt((Data[EAxis::X * Data[EAxis::X]) + (Data[EAxis::Y] * Data[EAxis::Y]))));
+	Result[EAxis::X] = TO_DEGREES(TMath::ATan2(Data[EAxis::Z], TMath::Sqrt((Data[EAxis::X] * Data[EAxis::X]) + (Data[EAxis::Y] * Data[EAxis::Y]))));
 	Result[EAxis::Z] = 0.0f;
 	return Result;
 }
@@ -1463,7 +1465,7 @@ INLINE STVector<Size, Type> STVector<Size, Type>::Min(const STVector<Size, Type>
 		Result[i] = (Data[i] < Other[i]) ? Data[i] : Other[i];
 	}
 	Result.CheckNaN();
-	return Result
+	return Result;
 }
 
 
@@ -1908,7 +1910,7 @@ INLINE STVector<Size, Type> STVector<Size, Type>::Power(const STVector<Size, Typ
 template <uint Size, typename Type>
 INLINE STVector<Size, Type> STVector<Size, Type>::Right()
 {
-	STVector<Size, Type> Result{ (Type)0.0f });
+	STVector<Size, Type> Result{ (Type)0.0f };
 	Result[EAxis::X] = (Type)1.0f;
 	return Result;
 }
@@ -1917,7 +1919,7 @@ INLINE STVector<Size, Type> STVector<Size, Type>::Right()
 template <uint Size, typename Type>
 INLINE STVector<Size, Type> STVector<Size, Type>::Left()
 {
-	STVector<Size, Type> Result{ (Type)0.0f });
+	STVector<Size, Type> Result{ (Type)0.0f };
 	Result[EAxis::X] = (Type)-1.0f;
 	return Result;
 }
@@ -1926,7 +1928,7 @@ INLINE STVector<Size, Type> STVector<Size, Type>::Left()
 template <uint Size, typename Type>
 INLINE STVector<Size, Type> STVector<Size, Type>::Up()
 {
-	STVector<Size, Type> Result{ (Type)0.0f });
+	STVector<Size, Type> Result{ (Type)0.0f };
 	Result[EAxis::Y] = (Type)1.0f;
 	return Result;
 }
@@ -1935,7 +1937,7 @@ INLINE STVector<Size, Type> STVector<Size, Type>::Up()
 template <uint Size, typename Type>
 INLINE STVector<Size, Type> STVector<Size, Type>::Down()
 {
-	STVector<Size, Type> Result{ (Type)0.0f });
+	STVector<Size, Type> Result{ (Type)0.0f };
 	Result[EAxis::Y] = (Type)-1.0f;
 	return Result;
 }
@@ -1944,7 +1946,7 @@ INLINE STVector<Size, Type> STVector<Size, Type>::Down()
 template <uint Size, typename Type>
 INLINE STVector<Size, Type> STVector<Size, Type>::Forward()
 {
-	STVector<Size, Type> Result{ (Type)0.0f });
+	STVector<Size, Type> Result{ (Type)0.0f };
 	Result[EAxis::Z] = (Type)1.0f;
 	return Result;
 }
@@ -1953,7 +1955,7 @@ INLINE STVector<Size, Type> STVector<Size, Type>::Forward()
 template <uint Size, typename Type>
 INLINE STVector<Size, Type> STVector<Size, Type>::Backward()
 {
-	STVector<Size, Type> Result{ (Type)0.0f });
+	STVector<Size, Type> Result{ (Type)0.0f };
 	Result[EAxis::Z] = (Type)-1.0f;
 	return Result;
 }

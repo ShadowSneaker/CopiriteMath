@@ -1,5 +1,6 @@
 #pragma once
 
+
 #ifndef COPIRITE_UTILITY
 #define COPIRITE_UTILITY
 

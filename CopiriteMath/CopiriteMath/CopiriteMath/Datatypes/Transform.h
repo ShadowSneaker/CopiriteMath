@@ -112,5 +112,5 @@ public:
 
 inline void STransform::LookAt(STransform Other)
 {
-	Rotation.Y = TO_DEGREES(TMath::ATan2(Other.Location[0] - Location[0], Other.Location[2] - Location[2]));
+	Rotation.Y = TMath::ToDegrees(TMath::ATan2(Other.Location[0] - Location[0], Other.Location[2] - Location[2]));
 }

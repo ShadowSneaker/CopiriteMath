@@ -182,7 +182,7 @@ INLINE double TRandom::Range(double Min, double Max)
 template <uint Size, typename Type>
 INLINE STVector<Size, Type> TRandom::Range(STVector<Size, Type> Min, STVector<Size, Type> Max)
 {
-	Vector<Size, Type> Result;
+	STVector<Size, Type> Result;
 	for (uint i = 0; i < Result.GetSize(); ++i)
 	{
 		Result[i] = Range(Min[i], Max[i]);
@@ -218,7 +218,7 @@ INLINE bool TRandom::RandomBool()
 template <uint Size, typename Type>
 STVector<Size, Type> TRandom::RandomVector()
 {
-	Vector<Size, Type> Result;
+	STVector<Size, Type> Result;
 	float Length;
 
 	do
