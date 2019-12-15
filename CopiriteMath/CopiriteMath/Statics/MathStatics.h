@@ -1,38 +1,11 @@
 #pragma once
 #include "MathCore.h"
 
-#include <float.h>
-
-
-
-
 
 
 class TMath :public TMathCore
 {
 public:
-	
-
-
-	
-
-
-	// Returns the higher value between two inputted values.
-	template <class Type>
-	static INLINE Type Max(const Type A, const Type B)
-	{
-		return (A >= B) ? A : B;
-	}
-
-
-	// Returns the lowest value between two inputted value.
-	template <class Type>
-	static INLINE Type Min(const Type A, const Type B)
-	{
-		return (A <= B) ? A : B;
-	}
-
-
 	// Clamps the value to be between the Min and Max.
 	template <typename Type>
 	static INLINE Type Clamp(const Type Min, const Type Max, const Type Value)
@@ -141,7 +114,7 @@ public:
 
 	// Shorthand of doing ForceClamp(0,1).
 	// Clamps the value to be between 0 and 1.
-	// WIll force te value inputted to be between the Min and Max values.
+	// Will force te value inputted to be between the Min and Max values.
 	static INLINE double ForceClamp01(double& Value)
 	{
 		return ForceClamp01<double>(Value);
@@ -164,16 +137,16 @@ public:
 
 
 	// Multiplies value by itself.
-	static INLINE int32 Square(const int32 Value)
+	static INLINE double Square(const double Value)
 	{
-		return Square<int32>(Value);
+		return Square<double>(Value);
 	}
 
 
 	// Multiplies value by itself.
-	static INLINE double Square(const double Value)
+	static INLINE int32 Square(const int32 Value)
 	{
-		return Square<double>(Value);
+		return Square<int32>(Value);
 	}
 
 
@@ -215,14 +188,6 @@ public:
 	static INLINE int32 Lerp(const int32 Min, const int32 Max, const float Percent)
 	{
 		return Lerp<int32>(Min, Max, Percent);
-	}
-
-
-	// Gets a value betwee.
-	// @param Percent - The variable being clamped.
-	static INLINE float Lerp01(const float Percent)
-	{
-		return Lerp<float>(0.0f, 0.1f, Percent);
 	}
 
 
@@ -278,7 +243,7 @@ public:
 	// @return - Returns true if object B was in range of object A.
 	static INLINE bool NearlyEqual(const float A, const float B, const float Range)
 	{
-		return NearlyEqual<float>(A, B, Range);
+		return NearlyEqual(A, B, Range);
 	}
 
 
@@ -289,7 +254,7 @@ public:
 	// @return - Returns true if object B was in range of object A.
 	static INLINE bool NearlyEqual(const int32 A, const int32 B, const float Range)
 	{
-		return NearlyEqual<int32>(A, B, Range);
+		return NearlyEqual(A, B, Range);
 	}
 
 
@@ -300,7 +265,7 @@ public:
 	// @return - Returns true if object B was in range of object A.
 	static INLINE bool NearlyEqual(const double A, const double B, const float Range)
 	{
-		return NearlyEqual<double>(A, B, Range);
+		return NearlyEqual(A, B, Range);
 	}
 
 
@@ -323,7 +288,7 @@ public:
 	// @return - Returns true if the value is between the min and max.
 	static INLINE bool Range(const int32& Min, const int32& Max, const int32& Value)
 	{
-		return Range<int32>(Min, Max, Value);
+		return Range(Min, Max, Value);
 	}
 
 
@@ -334,7 +299,7 @@ public:
 	// @return - Returns true if the value is between the min and max.
 	static INLINE bool Range(const float& Min, const float& Max, const float& Value)
 	{
-		return Range<float>(Min, Max, Value);
+		return Range(Min, Max, Value);
 	}
 
 
@@ -345,80 +310,17 @@ public:
 	// @return - Returns true if the value is between the min and max.
 	static INLINE bool Range(const double& Min, const double& Max, const double& Value)
 	{
-		return Range<double>(Min, Max, Value);
+		return Range(Min, Max, Value);
 	}
 
 
 	//...
 
-	// Returns true if the inputted value is NaN.
-	static INLINE bool IsNaN(float Value)
-	{
-		return _isnan(Value) != 0;
-	}
+
+	
 
 
-	// Returns true if the inputted value is a finite number.
-	static INLINE bool IsFinite(float Value)
-	{
-		return _finite(Value) != 0;
-	}
-
-
-	// Returns a value based on comparand.
-	static INLINE float FloatSelect(float Comparand, float ValueGEZero, float ValueLTZero)
-	{
-		return ((Comparand >= 0.0f) ? ValueGEZero : ValueLTZero);
-	}
-
-
-	// Removes the decimal point in a inputted floating point value.
-	static INLINE int32 TruncateInt(float Value)
-	{
-		return (int32)Value;
-	}
-
-
-	// Removes the decimal point in an inputted floating point value.
-	static INLINE float TruncateFloat(float Value)
-	{
-		return (float)TruncateInt(Value);
-	}
-
-
-	// Removes the decimal point in an inputted double value.
-	static INLINE double TruncateDouble(float Value)
-	{
-		return (double)TruncateInt(Value);
-	}
-
-
-	// 
-	static INLINE float FMod(float X, float Y)
-	{
-		if (fabsf(Y) <= 1.e-8f)
-		{
-			return 0.0f;
-		}
-
-		const float Quotient{ TruncateFloat(X / Y) };
-		float IntPortion{ Y * Quotient };
-
-		if (fabsf(IntPortion) > fabsf(X))
-		{
-			IntPortion = X;
-		}
-		return X - IntPortion;
-	}
-
-
-	// Returns signed fractional part of a float.
-	// @param Value - The value to be converted.
-	// @return - A value between >= 0 and < 1 for non-negative input. A value between >= -1 and  < 0 for negative input.
-	static INLINE float Fractional(float Value)
-	{
-		return Value - TruncateFloat(Value);
-	}
+	
 
 
 	// 

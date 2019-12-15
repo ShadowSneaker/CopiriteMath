@@ -151,25 +151,25 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="CopiriteMath\Datatypes\Matrix.h" />
-    <ClInclude Include="CopiriteMath\Datatypes\Quaternion.h" />
-    <ClInclude Include="CopiriteMath\Datatypes\Transform.h" />
-    <ClInclude Include="CopiriteMath\Datatypes\Vector.h" />
-    <ClInclude Include="CopiriteMath\GlobalValues.h" />
-    <ClInclude Include="CopiriteMath\Math.h" />
-    <ClInclude Include="CopiriteMath\Statics\MathCore.h" />
-    <ClInclude Include="CopiriteMath\Statics\MathStatics.h" />
-    <ClInclude Include="CopiriteMath\Random.h" />
-    <ClInclude Include="CopiriteMath\Statics\TGraph.h" />
-    <ClInclude Include="CopiriteMath\Utility.h" />
+    <ClInclude Include="Datatypes\Global\VectorMath.h" />
+    <ClInclude Include="Datatypes\Matrix.h" />
+    <ClInclude Include="Datatypes\Quaternion.h" />
+    <ClInclude Include="Datatypes\Transform.h" />
+    <ClInclude Include="Datatypes\Vector.h" />
+    <ClInclude Include="GlobalValues.h" />
+    <ClInclude Include="Math.h" />
+    <ClInclude Include="Statics\MathCore.h" />
+    <ClInclude Include="Statics\MathStatics.h" />
+    <ClInclude Include="Random.h" />
+    <ClInclude Include="Statics\Graphs.h" />
+    <ClInclude Include="Utility.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="CopiriteMath\Datatypes\Quaternion.cpp" />
-    <ClCompile Include="CopiriteMath\Datatypes\Transform.cpp" />
-    <ClCompile Include="CopiriteMath\Math.cpp" />
-    <ClCompile Include="CopiriteMath\Statics\MathCore.cpp" />
-    <ClCompile Include="CopiriteMath\Statics\MathStatics.cpp" />
-    <ClCompile Include="CopiriteMath\Random.cpp" />
+    <ClCompile Include="Datatypes\Quaternion.cpp" />
+    <ClCompile Include="Datatypes\Transform.cpp" />
+    <ClCompile Include="Math.cpp" />
+    <ClCompile Include="Statics\MathCore.cpp" />
+    <ClCompile Include="Random.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

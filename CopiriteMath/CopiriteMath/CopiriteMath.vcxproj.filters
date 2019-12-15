@@ -15,57 +15,57 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="CopiriteMath\Datatypes\Vector.h">
+    <ClInclude Include="Utility.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CopiriteMath\Utility.h">
+    <ClInclude Include="GlobalValues.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CopiriteMath\GlobalValues.h">
+    <ClInclude Include="Math.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CopiriteMath\Datatypes\Matrix.h">
+    <ClInclude Include="Random.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CopiriteMath\Datatypes\Transform.h">
+    <ClInclude Include="Statics\MathCore.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CopiriteMath\Datatypes\Quaternion.h">
+    <ClInclude Include="Statics\MathStatics.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CopiriteMath\Random.h">
+    <ClInclude Include="Datatypes\Matrix.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CopiriteMath\Math.h">
+    <ClInclude Include="Datatypes\Quaternion.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CopiriteMath\Statics\MathStatics.h">
+    <ClInclude Include="Datatypes\Transform.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CopiriteMath\Statics\MathCore.h">
+    <ClInclude Include="Datatypes\Vector.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CopiriteMath\Statics\TGraph.h">
+    <ClInclude Include="Datatypes\Global\VectorMath.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Statics\Graphs.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="CopiriteMath\Datatypes\Quaternion.cpp">
+    <ClCompile Include="Math.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CopiriteMath\Random.cpp">
+    <ClCompile Include="Random.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CopiriteMath\Math.cpp">
+    <ClCompile Include="Statics\MathCore.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CopiriteMath\Datatypes\Transform.cpp">
+    <ClCompile Include="Datatypes\Quaternion.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CopiriteMath\Statics\MathStatics.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="CopiriteMath\Statics\MathCore.cpp">
+    <ClCompile Include="Datatypes\Transform.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

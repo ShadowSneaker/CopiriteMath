@@ -1217,13 +1217,13 @@ public:
 	INLINE STransform GetTransform() const;
 
 	// Returns this matrix's location.
-	INLINE SVector GetLocation() const;
+	INLINE SVector2 GetLocation() const;
 
 	// Returns this matrix's rotation.
-	INLINE SQuaternion GetRotation() const;
+	INLINE float GetRotation() const;
 
 	// Returns thsi matrix's scale.
-	INLINE SVector GetScale() const;
+	INLINE SVector2 GetScale() const;
 
 
 
@@ -1360,7 +1360,7 @@ INLINE SMatrix3 SMatrix3::Translate(const SVector& Translation) const
 	Result.Identity();
 	for (uint i = 0; i < GetRowCount(); ++i)
 	{
-		Result[2][i] = Translation[i];
+		Result[i][2] = Translation[i];
 	}
 	return *this * Result;
 }
@@ -1404,7 +1404,7 @@ INLINE SMatrix3 SMatrix3::ToTranslation(const SVector& Translation)
 	Identity();
 	for (uint i = 0; i < GetRowCount(); ++i)
 	{
-		Data[2][i] = Translation[i];
+		Data[i][2] = Translation[i];
 	}
 	return *this;
 }
@@ -1598,67 +1598,41 @@ INLINE STransform SMatrix3::GetTransform() const
 }
 
 
-INLINE SVector SMatrix3::GetLocation() const
+INLINE SVector2 SMatrix3::GetLocation() const
 {
-	return Data[2];
+	return GetColumn(2);
 }
 
 
-INLINE SQuaternion SMatrix3::GetRotation() const
+INLINE float SMatrix3::GetRotation() const
 {
-	SQuaternion Quat;
-	float R22{ Data[2][2] };
-	if (R22 <= 0.0f)
-	{
-		float Dif10 = Data[1][1] - Data[0][0];
-		float Omr22 = 1.0f - R22;
-		if (Dif10 <= 0.0f)
-		{
-			float FourXSqr = Omr22 - Dif10;
-			float Inv4x = 0.5f / TMath::Sqrt(FourXSqr);
-			Quat.X = FourXSqr * Inv4x;
-			Quat.Y = (Data[0][1] + Data[1][0]) * Inv4x;
-			Quat.Z = (Data[0][2] + Data[2][0]) * Inv4x;
-			Quat.W = (Data[1][2] - Data[2][1]) * Inv4x;
-		}
-		else
-		{
-			float FourYSqr = Omr22 + Dif10;
-			float Inv4y = 0.5f / TMath::Sqrt(FourYSqr);
-			Quat.X = (Data[0][1] + Data[1][0]) * Inv4y;
-			Quat.Y = FourYSqr * Inv4y;
-			Quat.Z = (Data[1][2] + Data[2][1]) * Inv4y;
-			Quat.W = (Data[2][0] - Data[0][2]) * Inv4y;
-		}
-	}
-	else
-	{
-		float Sum10 = Data[1][1] + Data[0][0];
-		float Opr22 = 1.0f + R22;
-		if (Sum10 <= 0.0f)
-		{
-			float FourZSqr = Opr22 - Sum10;
-			float Inv4z = 0.5f / TMath::Sqrt(FourZSqr);
-			Quat.X = (Data[0][2] + Data[2][0]) * Inv4z;
-			Quat.Y = (Data[1][2] + Data[2][1]) * Inv4z;
-			Quat.Z = FourZSqr * Inv4z;
-			Quat.W = (Data[0][1] - Data[1][0]) * Inv4z;
-		}
-		else
-		{
-			float FourWSqr = Opr22 + Sum10;
-			float Inv4w = 0.5f / TMath::Sqrt(FourWSqr);
-			Quat.X = (Data[1][2] - Data[2][1]) * Inv4w;
-			Quat.Y = (Data[2][0] - Data[0][2]) * Inv4w;
-			Quat.Z = (Data[0][1] - Data[1][0]) * Inv4w;
-			Quat.W = FourWSqr * Inv4w;
-		}
-	}
-	return Quat;
+	float Result{ 0.0f };
+	Result = TMath::ACos(Data[0][0]);
+	Result *= TMath::ASin(Data[0][1]);
+	Result *= -TMath::ASin(Data[1][0]);
+	Result *= TMath::ACos(Data[1][1]);
+	return Result;
+
+	//float R22{ Data[2][2] };
+	//float Sum10 = Data[1][1] + Data[0][0];
+	//float Opr22 = 1.0f + R22;
+	//if (Sum10 <= 0.0f)
+	//{
+	//	float FourZSqr = Opr22 - Sum10;
+	//	float Inv4z = 0.5f / TMath::Sqrt(FourZSqr);
+	//	return FourZSqr * Inv4z;
+	//}
+	//else
+	//{
+	//	float FourWSqr = Opr22 + Sum10;
+	//	float Inv4w = 0.5f / TMath::Sqrt(FourWSqr);
+	//	return (Data[0][1] - Data[1][0]) * Inv4w;
+	//}
+	
 }
 
 
-INLINE SVector SMatrix3::GetScale() const
+INLINE SVector2 SMatrix3::GetScale() const
 {
 	SVector2 Result;
 	for (uint i = 0; i < Result.GetVectorSize(); ++i)
@@ -2483,7 +2457,7 @@ INLINE SMatrix4 SMatrix4::Translate(const SVector4& Translation) const
 	Result.Identity();
 	for (uint i = 0; i < GetRowCount(); ++i)
 	{
-		Result[2][i] = Translation[i];
+		Result[i][3] = Translation[i];
 	}
 	return *this * Result;
 }
@@ -2527,7 +2501,7 @@ INLINE SMatrix4 SMatrix4::ToTranslation(const SVector4& Translation)
 	Identity();
 	for (uint i = 0; i < GetRowCount(); ++i)
 	{
-		Data[3][i] = Translation[i];
+		Data[i][3] = Translation[i];
 	}
 	return *this;
 }
@@ -2939,7 +2913,7 @@ INLINE STransform SMatrix4::GetTransform() const
 
 INLINE SVector SMatrix4::GetLocation() const
 {
-	return Data[EAxis::W];
+	return GetColumn(3);
 }
 
 

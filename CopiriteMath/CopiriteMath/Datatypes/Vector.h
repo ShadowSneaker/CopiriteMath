@@ -2,6 +2,8 @@
 #include "../GlobalValues.h"
 #include "../Statics/MathStatics.h"
 
+#include <iostream>
+
 
 // Other libraries (if included)
 
@@ -1083,9 +1085,9 @@ template <uint Size, typename Type>
 INLINE STVector<Size, Type> STVector<Size, Type>::operator|(const STVector<Size, Type>& Other) const
 {
 	STVector<Size, Type> Result{ 0.0f };
-	Result[EAxis::X] = (Data[EAxis::Y] * Other[EAxis::Z]) - (Data[EAxis::Z] * Other[EAxis::Y]);
-	Result[EAxis::Y] = (Data[EAxis::Z] * Other[EAxis::X]) - (Data[EAxis::X] * Other[EAxis::Z]);
-	Result[EAxis::Z] = (Data[EAxis::X] * Other[EAxis::Y]) - (Data[EAxis::Y] * Other[EAxis::X]);
+	Result[0] = (Data[1] * Other[2]) - (Data[2] * Other[1]);
+	Result[1] = (Data[2] * Other[0]) - (Data[0] * Other[2]);
+	Result[2] = (Data[0] * Other[1]) - (Data[1] * Other[0]);
 	Result.CheckNaN();
 	return Result;
 }
@@ -1291,7 +1293,7 @@ INLINE void STVector<Size, Type>::Print() const
 {
 	for (uint i = 0; i < Size; ++i)
 	{
-		if (i - 1 == Size) printf("%f\n", Data[i]);
+		if (i + 1 == Size) printf("%f\n", Data[i]);
 		else printf("%f, ", Data[i]);
 	}
 }
