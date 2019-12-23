@@ -154,6 +154,7 @@
     <ClInclude Include="Datatypes\Global\VectorMath.h" />
     <ClInclude Include="Datatypes\Matrix.h" />
     <ClInclude Include="Datatypes\Quaternion.h" />
+    <ClInclude Include="Datatypes\Rotator.h" />
     <ClInclude Include="Datatypes\Transform.h" />
     <ClInclude Include="Datatypes\Vector.h" />
     <ClInclude Include="GlobalValues.h" />
@@ -166,6 +167,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Datatypes\Quaternion.cpp" />
+    <ClCompile Include="Datatypes\Rotator.cpp" />
     <ClCompile Include="Datatypes\Transform.cpp" />
     <ClCompile Include="Math.cpp" />
     <ClCompile Include="Statics\MathCore.cpp" />

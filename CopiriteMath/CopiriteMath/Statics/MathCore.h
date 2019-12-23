@@ -5,10 +5,10 @@
 #include <float.h>
 
 
-#define TO_RADIAN(Value) { (float) ((Value) * (TMathCore::PI / 180.0f)) }
-#define RADIAN { (float) (TMathCore::PI * 2.0f) }
-#define TO_DEGREES(Value) { (float) ((Value) * (180.0f / TMathCore::PI)) }
-#define DEGREES { (float) (TMathCore::PI / 180.0f) }
+#define TO_RADIAN(Value) { ((Value) * (TMathCore::PI / 180.0f)) }
+#define RADIAN { (TMathCore::PI * 2.0f) }
+#define TO_DEGREES(Value) { ((Value) * (180.0f / TMathCore::PI)) }
+#define DEGREES { (TMathCore::PI / 180.0f) }
 
 
 // The universal platform declaration of math functions.

@@ -284,25 +284,33 @@ public:
 	// @return - The constructor quaternion.
 	static Quaternion<Type> Euler(const STVector<3, Type>& Vec)
 	{
-		const Type DivideBy2{ ((Type)TMath::PI / (Type)180.0f) / (Type)2.0f };
+		SVector Rad{ TO_RADIAN(Vec) };
 
-		Type SPitch{ TMath::Sin(Vec[EAxis::X] * 0.5f) };
-		Type SYaw{ TMath::Sin(Vec[EAxis::Y] * 0.5f) };
-		Type SRoll{ TMath::Sin(Vec[EAxis::Z] * 0.5f) };
+		Type SPitch{ TMath::Sin(Rad[EAxis::X] / 2.0f) };
+		Type SYaw{   TMath::Sin(Rad[EAxis::Y] / 2.0f) };
+		Type SRoll{  TMath::Sin(Rad[EAxis::Z] / 2.0f) };
 
-		Type CPitch{ TMath::Cos(Vec[EAxis::X] * 0.5f) };
-		Type CYaw{ TMath::Cos(Vec[EAxis::Y] * 0.5f) };
-		Type CRoll{ TMath::Cos(Vec[EAxis::Z] * 0.5f) };
+		Type CPitch{ TMath::Cos(Rad[EAxis::X] / 2.0f) };
+		Type CYaw{   TMath::Cos(Rad[EAxis::Y] / 2.0f) };
+		Type CRoll{  TMath::Cos(Rad[EAxis::Z] / 2.0f) };
+
+
+		Quaternion<Type> Result;
+		Result.W = (CPitch * CYaw * CRoll) - (SPitch * SYaw * SRoll);
+		Result.X = (CPitch * CYaw * SRoll) + (SPitch * SYaw * CRoll);
+		Result.Y = (SPitch * CYaw * CRoll) + (CPitch * SYaw * SRoll);
+		Result.Z = (CPitch * SYaw * CRoll) - (SPitch * CYaw * SRoll);
+
+		//Result.W = (CYaw * CPitch * CRoll) - (SYaw * SPitch * SRoll);
+		//Result.X = (CYaw * CPitch * SRoll) - (SYaw * SPitch * CRoll);
+		//Result.Y = (SYaw * CPitch * SRoll) + (CYaw * SPitch * CRoll);
+		//Result.Z = (SYaw * CPitch * CRoll) - (CYaw * SPitch * SRoll);
+
+		//const Type DivideBy2{ ((Type)TMath::PI / (Type)180.0f) / (Type)2.0f };
 
 		//TMath::SinCos(&SPitch, &CPitch, Vector[EAxis::X] * DivideBy2);
 		//TMath::SinCos(&SYaw, &CYaw, Vector[EAxis::Y] * DivideBy2);
 		//TMath::SinCos(&SRoll, &CRoll, Vector[EAxis::Z] * DivideBy2);
-
-		Quaternion<Type> Result;
-		Result.W = (CYaw * CPitch * CRoll) + (SYaw * SPitch * SRoll);
-		Result.X = (CYaw * CPitch * SRoll) - (SYaw * SPitch * CRoll);
-		Result.Y = (SYaw * CPitch * SRoll) + (CYaw * SPitch * CRoll);
-		Result.Z = (SYaw * CPitch * CRoll) - (CYaw * SPitch * SRoll);
 
 		//Result.X = ( CRoll * SPitch * SYaw) - (SRoll * CPitch * CYaw);
 		//Result.Y = ( CRoll * CPitch * SYaw) - (SRoll * SPitch * CYaw);
@@ -602,7 +610,8 @@ STVector<3, Type> Quaternion<Type>::ToEuler() const
 	Type SinYCosP{ 2.0f * (W * Z + X * Y) };
 	Type CosYCosP{ 1.0f - 2.0f * (Y * Y + Z * Z) };
 	Result[EAxis::Y] = TMath::ATan2(SinYCosP, CosYCosP);
-	return Result;
+
+	return TO_DEGREES(Result);
 
 
 	/*const Type SingularityTest{ Type((Z * X) - (W * Y)) };
