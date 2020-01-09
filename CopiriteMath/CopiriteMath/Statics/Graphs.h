@@ -16,7 +16,7 @@ class TGraph :public TMathCore
 		Type Result;
 		for (uint i = 0; i < StepCount; ++i)
 		{
-			Area += Function(Start + (i + (Type)0.5f) * Step) * Step;
+			Result += Function(Start + (i + (Type)0.5f) * Step) * Step;
 		}
 		return Result;
 	}

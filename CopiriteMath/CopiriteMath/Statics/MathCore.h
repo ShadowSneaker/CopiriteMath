@@ -1,5 +1,5 @@
 #pragma once
-#include "../GlobalValues.h"
+#include "../MathGlobals.h"
 
 #include <math.h>
 #include <float.h>
@@ -509,7 +509,7 @@ public:
 	// Rounds the inputted double down to the nearest or equal integer.
 	// @param Value - The value to convert.
 	// @return - An integer less than or equal to the inputted value.
-	static INLINE double FloorDouble(float Value)
+	static INLINE double FloorDouble(double Value)
 	{
 		return floor(Value);
 	}

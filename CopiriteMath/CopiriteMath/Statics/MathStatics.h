@@ -2,7 +2,8 @@
 #include "MathCore.h"
 
 
-
+// A list of static core math functions.
+// These functions are universal and work on all platforms.
 class TMath :public TMathCore
 {
 public:

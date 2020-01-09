@@ -1,5 +1,5 @@
 #pragma once
-#include "../GlobalValues.h"
+#include "../MathGlobals.h"
 #include "../Statics/MathStatics.h"
 
 #include <iostream>
