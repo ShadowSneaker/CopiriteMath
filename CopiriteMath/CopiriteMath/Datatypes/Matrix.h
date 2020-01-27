@@ -996,11 +996,13 @@ public:
 	SMatrix3()
 	{}
 
+	// Constructor, Copies the values of a 3x3 matrix into this matrix.
+	// @param Other - The original matrix to copy the values from.
 	INLINE SMatrix3(SMatrix<3, 3, float> Other);
 
 	// Constructor, Initiates the matrix with a location, rotation and scale.
 	// @note - This constructor multiplies the matrices: Scale * Rotation * Translation.
-	// @param Transform - The location, rotation and scale this matrix should be created by.
+	// @param Transform - The location, rotation and scale this matrix should be created at.
 	INLINE SMatrix3(STransform Transform);
 
 	// Constructor, Initiates the matrix with a location, rotation and scale.
@@ -1096,7 +1098,7 @@ public:
 	// @return - The resulting matrix from the rotation.
 	INLINE SMatrix3 SetRotateRoll(const float& Angle);
 
-	// Makes this matrix a rotation matrix along the Z axis and sets represents the inputted angle.
+	// Makes this matrix a rotation matrix along the Z axis and represents the inputted angle.
 	// @note - This assumes the input is in Radians.
 	// @param Angle - The angle to rotate by.
 	// @return - The resulting matrix from the rotation.
@@ -1114,7 +1116,7 @@ public:
 	// @return - The resulting matrix from the rotation.
 	INLINE SMatrix3 SetRotateZ(const float& Angle);
 
-	// Makes this matrix a rotation matrix along the X axis and represents the inputted angle.
+	// Makes this matrix a rotation matrix along the Z axis and represents the inputted angle.
 	// @note - This assumes the input is in Radians.
 	// @param Angle - The angle to rotate by.
 	// @return - The resulting matrix from the rotation.
@@ -1122,19 +1124,19 @@ public:
 
 	// Rotates this matrix along all axis and returns the resulting matrix.
 	// @note - This assumes the input is in Radians.
-	// @param Rotation - The rotations in the Z axis to rotate.
+	// @param Rotation - The amount to rotate in the Z axis.
 	// @return - The resulting matrix from the rotation.
 	INLINE SMatrix3 Rotate(const float& Rotation) const;
 
 	// Rotates this matrix along all axis and returns the result and sets this matrix to the resulting matrix.
 	// @note - This assumes the input is in Radians.
-	// @param Rotation - The rotations in the Z axis to rotate.
+	// @param Rotation - The amount to rotate in the Z axis.
 	// @return - The resulting matrix from the rotation.
 	INLINE SMatrix3 SetRotate(const float& Rotation);
 
 	// Makes this matrix a rotation matrix and represents the inputted angle.
 	// @note - This assumes the input is in Radians.
-	// @param Rotation - The rotations in the Z axis to rotate.
+	// @param Rotation - The amount to rotate in the Z axis.
 	// @return - The resulting matrix from the rotation.
 	INLINE SMatrix3 ToRotation(const float& Rotation);
 
@@ -1149,15 +1151,14 @@ public:
 	// @return - The resulting matrix from the scaling.
 	INLINE SMatrix3 Scale(const float& X, const float& Y) const;
 
-	// Scales this matrix and returns the resulting matrix and sets this matrix the the resulting matrix.
+	// Scales this matrix and returns the resulting matrix and sets this matrix the resulting matrix.
 	// @param InScale - The scale this matrix will be multiplied by.
 	// @return - The resulting matrix from the scaling.
 	INLINE SMatrix3 SetScale(const SVector2& InScale);
 
-	// Scales this matrix and returns the resulting matrix and sets this matrix the the resulting matrix.
+	// Scales this matrix and returns the resulting matrix and sets this matrix the resulting matrix.
 	// @param X - The scaling amount along the X axis.
 	// @param Y - The scaling amount along the Y axis.
-	// @param Z - The scaling amount along the Z axis.
 	// @return - The resulting matrix from the scaling.
 	INLINE SMatrix3 SetScale(const float& X, const float& Y);
 
@@ -1169,7 +1170,6 @@ public:
 	// Makes this matrix a scale matrix and represents the inputted scale.
 	// @param X - The scaling amount along the X axis.
 	// @param Y - The scaling amount along the Y axis.
-	// @param Z - The scaling amount along the Z axis.
 	// @return - The resulting matrix from the scaling.
 	INLINE SMatrix3 ToScale(const float& X, const float& Y);
 
@@ -1222,7 +1222,7 @@ public:
 	// Returns this matrix's rotation.
 	INLINE float GetRotation() const;
 
-	// Returns thsi matrix's scale.
+	// Returns this matrix's scale.
 	INLINE SVector2 GetScale() const;
 
 
@@ -1345,12 +1345,6 @@ INLINE SMatrix3::SMatrix3(STransform Transform)
 INLINE SMatrix3::SMatrix3(SVector Location, SQuaternion Rotation, SVector Scale)
 {
 	ToTransform(Location, Rotation, Scale);
-}
-
-
-INLINE STransform SMatrix3::ToTransform() const
-{
-	return STransform{ GetLocation(), GetRotation(), GetScale() };
 }
 
 
@@ -1676,7 +1670,7 @@ public:
 	/// Conversions
 
 	// Converts this matrix to a transformation.
-	INLINE STransform ToTransform() const;
+	INLINE STransform GetTransform() const;
 
 #ifdef INCLUDE_DIRECTX_MATH
 	// Converts this matrix to a DirectX::XMMATRIX
@@ -2051,8 +2045,6 @@ public:
 
 	/// Getters
 
-	// Returns this matrix as a transformation.
-	INLINE STransform GetTransform() const;
 
 	// Returns this matrix's location.
 	INLINE SVector GetLocation() const;
@@ -2420,7 +2412,7 @@ INLINE SMatrix4::SMatrix4(SVector Location, SQuaternion Rotation, SVector Scale)
 }
 
 
-INLINE STransform SMatrix4::ToTransform() const
+INLINE STransform SMatrix4::GetTransform() const
 {
 	return STransform{ GetLocation(), GetRotation(), GetScale() };
 }
@@ -2902,12 +2894,6 @@ INLINE SMatrix4 SMatrix4::Merge(SMatrix4 Mat)
 	MT[2] = SVector4::Merge(P[2], P[3], EAxis::X, EAxis::Y);
 	MT[3] = SVector4::Merge(P[2], P[3], EAxis::Z, EAxis::W);
 	return MT;
-}
-
-
-INLINE STransform SMatrix4::GetTransform() const
-{
-	return STransform{ GetLocation(), GetRotation(), GetScale() };
 }
 
 

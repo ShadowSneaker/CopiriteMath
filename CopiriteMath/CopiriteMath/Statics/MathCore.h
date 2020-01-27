@@ -5,9 +5,16 @@
 #include <float.h>
 
 
+// Converts the inputted value to radians.
 #define TO_RADIAN(Value) { ((Value) * (TMathCore::PI / 180.0f)) }
+
+// The conversion to radians.
 #define RADIAN { (TMathCore::PI * 2.0f) }
+
+// Converts the inputted value to degrees.
 #define TO_DEGREES(Value) { ((Value) * (180.0f / TMathCore::PI)) }
+
+// The conversion to degrees.
 #define DEGREES { (TMathCore::PI / 180.0f) }
 
 
@@ -93,7 +100,7 @@ public:
 	// Calculates the sineH of the inputted value.
 	static INLINE double SinH(double Value) { return sinh(Value); }
 
-	// Calcualtes the sosine of the inputted value.
+	// Calcualtes the cosine of the inputted value.
 	static INLINE float Cos(float Value) { return cosf(Value); }
 
 	// Calculates the cosine of the inputted value.
@@ -301,7 +308,7 @@ public:
 	}
 
 
-	// Converts from radians to degrees.
+	// Converts the inputted value from radians to degrees.
 	// @param - The value to convert to radians.
 	// @return - The converted value.
 	static float ToRadians(float Degrees)
@@ -310,7 +317,7 @@ public:
 	}
 
 
-	// Converts from radians to degrees.
+	// Converts the inputted value from radians to degrees.
 	// @param - The value to convert to radians.
 	// @return - The converted value.
 	static double ToRadians(double Degrees)
@@ -319,7 +326,7 @@ public:
 	}
 
 
-	// Converts from degrees to radians.
+	// Converts the inputted value from degrees to radians.
 	// @param - The value to convert to degrees.
 	// @return - The converted value.
 	static float ToDegrees(float Radians)
@@ -328,7 +335,7 @@ public:
 	}
 
 
-	// Converts from degrees to radians.
+	// Converts the inputted value from degrees to radians.
 	// @param - The value to convert to degrees.
 	// @return - The converted value.
 	static double ToDegrees(double Radians)
@@ -337,63 +344,83 @@ public:
 	}
 
 
-	// Returns the result of number powered by a value.
-	static INLINE float Power(const float Value, const float Exponent)
+	// Returns the result of an inputted value being multiplied by itself a specified amount of times.
+	// @param Value - The value to be powered.
+	// @param Exponent - How many times the value should be multiplied by itself.
+	// @return - The powered value.
+	static INLINE float Power(const float& Value, const float& Exponent)
 	{
 		return powf(Value, Exponent);
 	}
 
 
-	// Returns the result of a number powered by a value.
-	static INLINE double Power(const double Value, const double Exponent)
+	// Returns the result of an inputted value being multiplied by itself a specified amount of times.
+	// @param Value - The value to be powered.
+	// @param Exponent - How many times the value should be multiplied by itself.
+	// @return - The powered value.
+	static INLINE double Power(const double& Value, const double& Exponent)
 	{
 		return pow(Value, Exponent);
 	}
 
 
-	// Returns the square root of an inputted value.
-	static INLINE float Sqrt(const float Value)
+	// Returns the value where multiplied by itself, gives the inputted value.
+	// @param Value - The value to get the square root of.
+	// @return - The square root of the inputted value.
+	static INLINE float Sqrt(const float& Value)
 	{
 		return sqrtf(Value);
 	}
 
 
-	// Returns the square root of an inputted value.
-	static INLINE double Sqrt(const double Value)
+	// Returns the value where multiplied by itself, gives the inputted value.
+	// @param Value - The value to get the square root of.
+	// @return - The square root of the inputted value.
+	static INLINE double Sqrt(const double& Value)
 	{
 		return sqrt(Value);
 	}
 
 
-	// Returns the inverted square root of an inputted value.
-	static INLINE float InvSqrt(float Value)
+	// Returns the inverse of value where multiplied by itself, gives the inputted value.
+	// @param Value - The value to get the inverse square root of.
+	// @return - The inverse square root of the inputted value.
+	static INLINE float InvSqrt(const float& Value)
 	{
 		return 1.0f / sqrtf(Value);
 	}
 
 
-	// Returns the inverted square root of an inputted value.
-	static INLINE double InvSqrt(double Value)
+	// Returns the inverse of value where multiplied by itself, gives the inputted value.
+	// @param Value - The value to get the inverse square root of.
+	// @return - The inverse square root of the inputted value.
+	static INLINE double InvSqrt(const double& Value)
 	{
 		return 1.0 / sqrt(Value);
 	}
 
 
-	// Returns the absolute value of the inputted value.
-	static INLINE float Abs(const float Value)
+	// Returns the distance of a number on the number line from 0.
+	// @param Value - The value to get the absolute value from.
+	// @return - The absolute value of the given input.
+	static INLINE float Abs(const float& Value)
 	{
 		return fabsf(Value);
 	}
 
 
-	// Returns the absolute value of the inputted value.
-	static INLINE double Abs(const double Value)
+	// Returns the distance of a number on the number line from 0.
+	// @param Value - The value to get the absolute value from.
+	// @return - The absolute value of the given input.
+	static INLINE double Abs(const double& Value)
 	{
 		return fabs(Value);
 	}
 
 
-	// Returns true if the inputted value is NaN.
+	// Returns true if the inputted value is not a number.
+	// @param Value - The value to check.
+	// @return - true if the inputted value is not a number.
 	template <typename Type>
 	static INLINE bool IsNaN(Type Value)
 	{
@@ -401,14 +428,18 @@ public:
 	}
 
 
-	// Returns true if the inputted value is NaN.
+	// Returns true if the inputted value is not a number.
+	// @param Value - The value to check.
+	// @return - true if the inputted value is not a number.
 	static INLINE bool IsNaN(float Value)
 	{
 		return _isnan(Value) != 0;
 	}
 
 
-	// Returns true if the inputted value is a finite number.
+	// Returns true if the inputted value is a valid number.
+	// @param Value - The value to check.
+	// @return - true if the inputted value is a valid number.
 	template <typename Type>
 	static INLINE bool IsFinite(Type Value)
 	{
@@ -416,7 +447,9 @@ public:
 	}
 
 
-	// Returns true if the inputted value is a finite number.
+	// Returns true if the inputted value is a valid number.
+	// @param Value - The value to check.
+	// @return - true if the inputted value is a valid number.
 	static INLINE bool IsFinite(float Value)
 	{
 		return _finite(Value) != 0;
@@ -446,15 +479,15 @@ public:
 
 	// Returns the higher value between two inputted values.
 	template <class Type>
-	static INLINE Type Max(const Type A, const Type B)
+	static INLINE Type Max(const Type& A, const Type& B)
 	{
 		return (A >= B) ? A : B;
 	}
 
 
-	// Returns the lowest value between two inputted value.
+	// Returns the lowest value between two inputted values.
 	template <class Type>
-	static INLINE Type Min(const Type A, const Type B)
+	static INLINE Type Min(const Type& A, const Type& B)
 	{
 		return (A <= B) ? A : B;
 	}
@@ -467,7 +500,7 @@ public:
 	}
 
 
-	// Removes the decimal point in a inputted floating point value.
+	// Removes the decimal point in an inputted floating point value.
 	static INLINE int32 TruncateInt(float Value)
 	{
 		return (int32)Value;
@@ -517,7 +550,7 @@ public:
 
 	// Rounds the inputted float up to the nearest or equal integer.
 	// @param Value - The value to convert.
-	// @return - The rounded up integer.
+	// @return - An integer greater than or equal to the inputted value.
 	static INLINE int32 CeilingInt(float Value)
 	{
 		return TruncateInt(ceilf(Value));
@@ -526,7 +559,7 @@ public:
 
 	// Rounds the inputted float up to the nearest or equal integer.
 	// @param Value - The value to convert.
-	// @return - The rounded up integer.
+	// @return - An integer greater than or equal to the inputted value.
 	static INLINE float CeilingFloat(float Value)
 	{
 		return ceilf(Value);
@@ -535,7 +568,7 @@ public:
 
 	// Rounds the inputted double up to the nearest or equal integer.
 	// @param Value - The value to convert.
-	// @return - The rounded up integer.
+	// @return - An integer greater than or equal to the inputted value.
 	static INLINE double CeilingDouble(double Value)
 	{
 		return ceil(Value);
@@ -569,9 +602,9 @@ public:
 	}
 
 
-	// Returns signed fractional part of a float.
+	// Returns the signed fractional part of a float.
 	// @param Value - The value to be converted.
-	// @return - A value between >= 0 and < 1 for non-negative input. A value between >= -1 and  < 0 for negative input.
+	// @return - A value between >= 0 and < 1 for non-negative inputs. A value between >= -1 and < 0 for negative inputs.
 	static INLINE float Fractional(float Value)
 	{
 		return Value - TruncateFloat(Value);
@@ -580,7 +613,7 @@ public:
 
 	// Returns the remainder of X / Y.
 	// @warning - Always returns the remainder toward 0, not toward the smaller multiple of Y.
-	// @note - Use Floor instead when snapping positions that can ve negative to a grid.
+	// @note - Use Floor instead when snapping positions that can be negative to a grid.
 	static INLINE float FMod(float X, float Y)
 	{
 		if (fabsf(Y) <= 1.e-8f)

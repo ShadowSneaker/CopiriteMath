@@ -160,7 +160,7 @@
     <ClInclude Include="Math.h" />
     <ClInclude Include="Statics\MathCore.h" />
     <ClInclude Include="Statics\MathStatics.h" />
-    <ClInclude Include="Random.h" />
+    <ClInclude Include="Statics\Random.h" />
     <ClInclude Include="Statics\Graphs.h" />
     <ClInclude Include="Utility.h" />
   </ItemGroup>
@@ -169,7 +169,7 @@
     <ClCompile Include="Datatypes\Transform.cpp" />
     <ClCompile Include="Math.cpp" />
     <ClCompile Include="Statics\MathCore.cpp" />
-    <ClCompile Include="Random.cpp" />
+    <ClCompile Include="Statics\Random.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

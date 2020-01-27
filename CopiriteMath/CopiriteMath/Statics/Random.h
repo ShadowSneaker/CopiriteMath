@@ -1,11 +1,11 @@
-#include "DataTypes/Vector.h"
-#include "Statics/MathStatics.h"
+#include "../DataTypes/Vector.h"
+#include "../Statics/MathStatics.h"
 
 #include <random>
 #include <time.h>
 
 
-// A static class used to generate random values for varius things.
+// A static class used to generate random values for various things.
 // All functions and components in this are static so to access them
 // use "TRandom::".
 class TRandom
@@ -15,6 +15,7 @@ public:
 
 	// The seed currently used to generate the random numbers.
 	static int32 Seed;
+
 
 
 public:

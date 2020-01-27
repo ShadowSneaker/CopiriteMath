@@ -11,18 +11,22 @@
 #include <DirectXMath.h>
 #endif // INCLUDE_DIRECTX_MATH
 
+#ifdef INCLUDE_SDL
+#include<SDL.h>
+#endif
 
 
+#pragma warning(disable : 26812)
 // Stores the different types of axis'.
 // Used to easily access values in a vector.
-enum EAxis
+enum EAxis : uint32
 {
 	X = 0x0,		// The X axis.
 	Y = 0x1,		// The Y axis.
 	Z = 0x2,		// The Z axis.
 	W = 0x3			// The W axis.
 };
-
+//DEFINE_ENUM_FLAG_OPERATORS(EAxis);
 
 
 // Represents a point in space in a specifid amount of dimensions.
@@ -35,13 +39,13 @@ private:
 	/// Properties
 
 	// Stores all elements of this vector.
-	Type Data[Size]{ 0.0f };
+	Type Data[Size]{ 0 };
 
 
 public:
 	/// Constructors
 
-	// Constructor, Default.
+	// Constructor, Default. Creates an empty vector.
 	INLINE STVector<Size, Type>();
 
 	// Constructor, Initializes all vector components with the inputted value.
@@ -59,9 +63,9 @@ public:
 	// @param InZ - The value used to initialize this vector's Z component.
 	INLINE STVector<Size, Type>(Type InX, Type InY, Type InZ);
 
-	// Constructor, Initiates a vector3 using a 2d vector and a value.
+	// Constructor, Initiates a vector3 using a 2D vector and a value.
 	// @param InV - The vector2 used to initiate this vector's X and Y components.
-	// @param InZ - The value used to initialize this Vector's Z component.
+	// @param InZ - The value used to initialize this vector's Z component.
 	INLINE STVector<Size, Type>(STVector<2, Type> InV, Type InZ);
 
 	// Constructor, Initiates a vector4 using 4 values.
@@ -76,20 +80,20 @@ public:
 	// @param V2 - The vector2 used to initialize this vector's Z and W components.
 	INLINE STVector<Size, Type>(STVector<2, Type> V1, STVector<2, Type> V2);
 
-	// Constructor, Initiates a vector4 using a 2D vector and 2 values.
+	// Constructor, Initiates a vector4 using a vector2 and 2 values.
 	// @param V - The vector2 used to initialize this vector's X and Y components.
 	// @param InZ - The value used to initialize this vector's Z component.
 	// @param InW - The value used to initialize this vector's W component.
 	INLINE STVector<Size, Type>(STVector<2, Type> V, Type InZ, Type InW);
 
-	// Constructor, Initiates a vector4 using a 3D vector and a value.
+	// Constructor, Initiates a vector4 using a vector3 and a value.
 	// @param V - The vector3 used to initialize this vector's X, Y and Z components.
 	// @param InW - The value used to initialize this vector's W component.
 	INLINE STVector<Size, Type>(STVector<3, Type> V, Type InW);
 
 	// Constructor, Initializes this vector with an array of values.
 	// @note - The array size must be the same size as this vector.
-	// @param Values - The array to initialize all components.
+	// @param Values - The array to initialize all components of this vector.
 	INLINE STVector<Size, Type>(Type Values[Size]);
 
 	// Constructor, Initializes this vector with the components of another vector.
@@ -2016,7 +2020,7 @@ template <uint Size, typename Type>
 INLINE float STVector<Size, Type>::Distance(const STVector<Size, Type>& Start, const STVector<Size, Type>& End)
 {
 	STVector<Size, Type> Delta{ Start - End };
-	return TMath::Sqrt(Delta.DotProduct(Delta));
+	return TMath::Sqrt(Delta ^ Delta);
 }
 
 
@@ -2024,7 +2028,7 @@ template <uint Size, typename Type>
 INLINE float STVector<Size, Type>::DistanceSquared(const STVector<Size, Type>& Start, const STVector<Size, Type>& End)
 {
 	STVector<Size, Type> Delta{ Start - End };
-	return Delta.DotProduct(Delta);
+	return Delta ^ Delta;
 }
 
 
