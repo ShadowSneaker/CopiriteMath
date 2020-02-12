@@ -298,6 +298,7 @@ public:
 	/// Conversions
 
 #ifdef INCLUDE_DIRECTX_MATH
+
 	// Converts a DirectX::XMVECTOR to this type of vector.
 	// @param V - The XMVECTOR to convert.
 	// @return - The converted vector.
@@ -305,7 +306,45 @@ public:
 
 	// Converts this vector to a DirectX::XMVECTOR.
 	INLINE DirectX::XMVECTOR ToXMVector() const;
+
 #endif // INCLUDE_DIRECTX_MATH
+
+
+#ifdef INCLUDE_SDL
+	// Converts a SDL_Rect to this type of vector.
+	// @param Rect - The SDL_Rect to convert.
+	// @return = The converted vector.
+	static INLINE STVector<Size, Type> FromSDL_Rect(SDL_Rect Rect);
+
+	// Converts a SDL_FRect to this type of vector.
+	// @param Rect - The SDL_FRect to convert.
+	// @return = The converted vector.
+	static INLINE STVector<Size, Type> FromSDL_FRect(SDL_FRect Rect);
+
+	// Converts a SDL_FPoint to this type of vector.
+	// @param Point - The SDL_FPoint to convert.
+	// @return = The converted vector.
+	static INLINE STVector<Size, Type> FromSDL_Point(SDL_Point Point);
+
+	// Converts a SDL_FPoint to this type of vector.
+	// @param Point - The SDL_FPoint to convert.
+	// @return = The converted vector.
+	static INLINE STVector<Size, Type> FromSDL_FPoint(SDL_FPoint Point);
+
+	// Converts this vector to a SDL_Rect.
+	INLINE SDL_Rect ToRect() const;
+
+	// Converts this vector to a SDL_FRect.
+	INLINE SDL_FRect ToFRect() const;
+
+	// Converts this vector to a SDL_FPoint.
+	INLINE SDL_Point ToPoint() const;
+
+	// Converts this vector to a SDL_FPoint.
+	INLINE SDL_FPoint ToFPoint() const;
+
+#endif // INCLUDE_SDL
+
 
 	// Converts this vector to represent a rotation of unit length.
 	INLINE STVector<3, float> Rotation() const;
@@ -882,7 +921,7 @@ INLINE STVector<Size, Type> STVector<Size, Type>::operator-(const STVector<Size2
 	STVector<Size, Type> Result;
 	for (uint i = 0; i < Count; ++i)
 	{
-		Result[i] = Data[i] - Other[i];
+		Result[i] = Data[i] - (Type)Other[i];
 	}
 	Result.CheckNaN();
 	return Result;
@@ -922,7 +961,7 @@ INLINE STVector<Size, Type> STVector<Size, Type>::operator-=(const STVector<Size
 	uint Count{ (Size < Size2) ? Size : Size2 };
 	for (uint i = 0; i < Count; ++i)
 	{
-		Data[i] -= Other[i];
+		Data[i] -= (Type)Other[i];
 	}
 	CheckNaN();
 	return *this;
@@ -949,7 +988,7 @@ INLINE STVector<Size, Type> STVector<Size, Type>::operator*(const STVector<Size2
 	STVector<Size, Type> Result;
 	for (uint i = 0; i < Count; ++i)
 	{
-		Result[i] = Data[i] * Other[i];
+		Result[i] = Data[i] * (Type)Other[i];
 	}
 	Result.CheckNaN();
 	return Result;
@@ -976,7 +1015,7 @@ INLINE STVector<Size, Type> STVector<Size, Type>::operator*=(const STVector<Size
 	uint Count{ (Size < Size2) ? Size : Size };
 	for (uint i = 0; i < Count; ++i)
 	{
-		Data[i] *= Other[i];
+		Data[i] *= (Type)Other[i];
 	}
 	CheckNaN();
 	return *this;
@@ -1003,7 +1042,7 @@ INLINE STVector<Size, Type> STVector<Size, Type>::operator/(const STVector<Size2
 	STVector<Size, Type> Result;
 	for (uint i = 0; i < Count; ++i)
 	{
-		Result[i] = Data[i] / Other[i];
+		Result[i] = Data[i] / (Type)Other[i];
 	}
 	Result.CheckNaN();
 	return Result;
@@ -1030,7 +1069,7 @@ INLINE STVector<Size, Type> STVector<Size, Type>::operator/=(const STVector<Size
 	uint Count{ (Size < Size2) ? Size : Size2 };
 	for (uint i = 0; i < Count; ++i)
 	{
-		Data[i] /= Other[i];
+		Data[i] /= (Type)Other[i];
 	}
 	CheckNaN();
 	return *this;
@@ -1275,8 +1314,8 @@ INLINE void STVector<Size, Type>::CheckNaN()
 {
 	if (ContainsNaN())
 	{
-		//printf("Vector contains NaN\n");
-		*this = 0.0f;
+		printf("Vector contains NaN\n");
+		*this = (Type)0.0f;
 	}
 }
 
@@ -1286,7 +1325,7 @@ INLINE bool STVector<Size, Type>::ContainsNaN() const
 {
 	for (uint i = 0; i < Size; ++i)
 	{
-		if (!TMath::IsFinite(Data[i])) return true;
+		if (!TMath::IsFinite((float)Data[i])) return true;
 	}
 	return false;
 }
@@ -1312,16 +1351,16 @@ INLINE STVector<Size, Type> STVector<Size, Type>::FromXMVector(DirectX::XMVECTOR
 	{
 	default:
 	case 4:
-		Result[3] = DirectX::XMVectorGetW(Vector);
+		Result[3] = (Type)DirectX::XMVectorGetW(Vector);
 
 	case 3:
-		Result[2] = DirectX::XMVectorGetZ(Vector);
+		Result[2] = (Type)DirectX::XMVectorGetZ(Vector);
 
 	case 2:
-		Result[1] = DirectX::XMVectorGetY(Vector);
+		Result[1] = (Type)DirectX::XMVectorGetY(Vector);
 
 	case 1:
-		Result[0] = DirectX::XMVectorGetX(Vector);
+		Result[0] = (Type)DirectX::XMVectorGetX(Vector);
 	}
 	return Result;
 }
@@ -1336,20 +1375,186 @@ INLINE DirectX::XMVECTOR STVector<Size, Type>::ToXMVector() const
 		return DirectX::XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f);
 
 	case 1:
-		return DirectX::XMVectorSet(Data[0], 0.0f, 0.0f, 0.0f);
+		return DirectX::XMVectorSet((float)Data[0], 0.0f, 0.0f, 0.0f);
 
 	case 2:
-		return DirectX::XMVectorSet(Data[0], Data[1], 0.0f, 0.0f);
+		return DirectX::XMVectorSet((float)Data[0], (float)Data[1], 0.0f, 0.0f);
 
 	case 3:
-		return DirectX::XMVectorSet(Data[0], Data[1], Data[2], 0.0f);
+		return DirectX::XMVectorSet((float)Data[0], (float)Data[1], (float)Data[2], 0.0f);
 
 	case 4:
 	default:
-		return DirectX::XMVectorSet(Data[0], Data[1], Data[2], Data[3]);
+		return DirectX::XMVectorSet((float)Data[0], (float)Data[1], (float)Data[2], (float)Data[3]);
 	}
 }
 #endif // INCLUDE_DIRECTX_MATH
+
+
+#ifdef INCLUDE_SDL
+template <uint Size, typename Type>
+INLINE STVector<Size, Type> STVector<Size, Type>::FromSDL_Rect(SDL_Rect Rect)
+{
+	STVector<Size, Type> Result;
+	switch (Size)
+	{
+	default:
+	case 4:
+		Result[3] = (Type)Rect.h;
+
+	case 3:
+		Result[2] = (Type)Rect.w;
+
+	case 2:
+		Result[1] = (Type)Rect.y;
+
+	case 1:
+		Result[0] = (Type)Rect.x;
+	}
+	return Result;
+}
+
+
+template <uint Size, typename Type>
+static INLINE STVector<Size, Type> STVector<Size, Type>::FromSDL_FRect(SDL_FRect Rect)
+{
+	STVector<Size, Type> Result;
+	switch (Size)
+	{
+	default:
+	case 4:
+		Result[3] = (Type)Rect.h;
+
+	case 3:
+		Result[2] = (Type)Rect.w;
+
+	case 2:
+		Result[1] = (Type)Rect.y;
+
+	case 1:
+		Result[0] = (Type)Rect.x;
+	}
+	return Result;
+}
+
+
+template <uint Size, typename Type>
+static INLINE STVector<Size, Type> STVector<Size, Type>::FromSDL_Point(SDL_Point Point)
+{
+	STVector<Size, Type> Result;
+	switch (Size)
+	{
+	default:
+	case 2:
+		Result[1] = (Type)Point.y;
+
+	case 1:
+		Result[0] = (Type)Point.x;
+	}
+	return Result;
+}
+
+
+template <uint Size, typename Type>
+static INLINE STVector<Size, Type> STVector<Size, Type>::FromSDL_FPoint(SDL_FPoint Point)
+{
+	STVector<Size, Type> Result;
+	switch (Size)
+	{
+	default:
+	case 2:
+		Result[1] = (Type)Point.y;
+
+	case 1:
+		Result[0] = (Type)Point.x;
+	}
+	return Result;
+}
+
+
+template <uint Size, typename Type>
+INLINE SDL_Rect STVector<Size, Type>::ToRect() const
+{
+	switch (Size)
+	{
+	case 0:
+		return SDL_Rect{ 0, 0, 0, 0 };
+
+	case 1:
+		return SDL_Rect{ (int32)Data[0], 0, 0, 0 };
+
+	case 2:
+		return SDL_Rect{ (int32)Data[0], (int32)Data[1], 0, 0 };
+
+	case 3:
+		return SDL_Rect{ (int32)Data[0], (int32)Data[1], (int32)Data[2], 0 };
+
+	case 4:
+	default:
+		return SDL_Rect{ (int32)Data[0], (int32)Data[1], (int32)Data[2], (int32)Data[3] };
+	}
+}
+
+
+template <uint Size, typename Type>
+INLINE SDL_FRect STVector<Size, Type>::ToFRect() const
+{
+	switch (Size)
+	{
+	case 0:
+		return SDL_FRect{ 0, 0, 0, 0 };
+
+	case 1:
+		return SDL_FRect{ (float)Data[0], 0, 0, 0 };
+
+	case 2:
+		return SDL_FRect{ (float)Data[0], (float)Data[1], 0, 0 };
+
+	case 3:
+		return SDL_FRect{ (float)Data[0], (float)Data[1], (float)Data[2], 0 };
+
+	case 4:
+	default:
+		return SDL_FRect{ (float)Data[0], (float)Data[1], (float)Data[2], (float)Data[3] };
+	}
+}
+
+
+template <uint Size, typename Type>
+INLINE SDL_Point STVector<Size, Type>::ToPoint() const
+{
+	switch (Size)
+	{
+	case 0:
+		return SDL_Point{ 0, 0 };
+
+	case 1:
+		return SDL_Point{ (int32)Data[0], 0 };
+
+	case 2:
+	default:
+		return SDL_Point{ (int32)Data[0], (int32)Data[1] };
+	}
+}
+
+
+template <uint Size, typename Type>
+INLINE SDL_FPoint STVector<Size, Type>::ToFPoint() const
+{
+	switch (Size)
+	{
+	case 0:
+		return SDL_FPoint{ 0.0f, 0.0f };
+
+	case 1:
+		return SDL_FPoint{ (float)Data[0], 0.0f };
+
+	case 2:
+	default:
+		return SDL_FPoint{ (float)Data[0], (float)Data[1] };
+	}
+}
+#endif // INCLUDE_SDL
 
 
 template <uint Size, typename Type>
@@ -1369,10 +1574,10 @@ template <uint Size, typename Type>
 template <typename NewType>
 INLINE STVector<Size, NewType> STVector<Size, Type>::ToType()
 {
-	STVector<Size, Type> Result;
+	STVector<Size, NewType> Result;
 	for (uint i = 0; i < Size; ++i)
 	{
-		Result[i] = (Type)Data[i];
+		Result[i] = (NewType)Data[i];
 	}
 	Result.CheckNaN();
 	return Result;
@@ -1383,10 +1588,10 @@ template <uint Size, typename Type>
 template <typename NewType>
 INLINE STVector<Size, NewType> STVector< Size, Type>::ToType() const
 {
-	STVector<Size, Type> Result;
+	STVector<Size, NewType> Result;
 	for (uint i = 0; i < Size; ++i)
 	{
-		Result[i] = (Type)Data[i];
+		Result[i] = (NewType)Data[i];
 	}
 	Result.CheckNaN();
 	return Result;

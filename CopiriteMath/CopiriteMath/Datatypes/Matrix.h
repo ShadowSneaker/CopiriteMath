@@ -28,7 +28,12 @@ public:
 
 	// Constructor, Default.
 	SMatrix()
-	{}
+	{
+		for (uint i = 0; i < Rows; ++i)
+		{
+			Data[i] = 0.0f;
+		}
+	}
 
 	// Constructor, Floods the entire matrix with a single floating point value.
 	// @param Value - The float value used to flood the matrix.
@@ -1003,21 +1008,21 @@ public:
 	// Constructor, Initiates the matrix with a location, rotation and scale.
 	// @note - This constructor multiplies the matrices: Scale * Rotation * Translation.
 	// @param Transform - The location, rotation and scale this matrix should be created at.
-	INLINE SMatrix3(STransform Transform);
+	INLINE SMatrix3(STransform2 Transform);
 
 	// Constructor, Initiates the matrix with a location, rotation and scale.
 	// @note - This constructor multiplies the matrices: Scale * Rotation * Translation.
 	// @param Location - The location this matrix should be placed at.
 	// @param Rotation - The rotation this matrix should be at.
 	// @param Scale - The scale this matrix should be at.
-	INLINE SMatrix3(SVector Location, SQuaternion Rotation, SVector Scale);
+	INLINE SMatrix3(SVector Location, float Rotation, SVector Scale);
 
 
 
 	/// Conversions
 
 	// Converts this matrix to a transformation.
-	INLINE STransform ToTransform() const;
+	//INLINE STransform ToTransform() const;
 
 
 
@@ -1176,45 +1181,45 @@ public:
 	// Transforms this matrix using a location, rotation and scale.
 	// @param InTransform - The location, rotation and scale to multiply against this matrix.
 	// @return - The resulting matrix after the transformation.
-	INLINE SMatrix3 Transform(const STransform& InTransform) const;
+	INLINE SMatrix3 Transform(const STransform2& InTransform) const;
 
 	// Transforms this matrix using a location, rotation and scale.
 	// @param Location - The location to be moved in.
 	// @param Rotation - The rotation to be rotated in.
 	// @param InScale - The scale to be scaled in.
 	// @return - The resulting matrix after the transformation.
-	INLINE SMatrix3 Transform(const SVector& Location, const SQuaternion& Rotation, const SVector& InScale) const;
+	INLINE SMatrix3 Transform(const SVector& Location, const float& Rotation, const SVector& InScale) const;
 
 	// Transforms this matrix using a location, rotationa and scale and set this matrix to the resulting matrix.
 	// @param InTransform - The location, rotation and scale to multiply against this matrix.
 	// @return - The resulting matrix after the transformation.
-	INLINE SMatrix3 SetTransform(const STransform& InTransform);
+	INLINE SMatrix3 SetTransform(const STransform2& InTransform);
 
 	// Transforms this matrix using a location, rotationa and scale and set this matrix to the resulting matrix.
 	// @param Location - The location to be moved in.
 	// @param Rotation - The rotation to be rotated in.
 	// @param InScale - The scale to be scaled in.
 	// @return - The resulting matrix after the transformation.
-	INLINE SMatrix3 SetTransform(const SVector& Location, const SQuaternion& Rotation, const SVector& InScale);
+	INLINE SMatrix3 SetTransform(const SVector& Location, const float& Rotation, const SVector& InScale);
 
 	// Makes this matrix a transform matrix and represents the inputted transformation.
 	// @param InTransform - The location, rotation and scale to multiply against this matrix.
 	// @return - The resulting matrix after the transformation.
-	INLINE SMatrix3 ToTransform(const STransform& NewTransform);
+	INLINE SMatrix3 ToTransform(const STransform2& NewTransform);
 
 	// Makes this matrix a transform matrix and represents the inputted transformation.
 	// @param Location - The location to be moved in.
 	// @param Rotation - The rotation to be rotated in.
 	// @param InScale - The scale to be scaled in.
 	// @return - The resulting matrix after the transformation.
-	INLINE SMatrix3 ToTransform(const SVector& Location, const SQuaternion& Rotation, const SVector& InScale);
+	INLINE SMatrix3 ToTransform(const SVector& Location, const float& Rotation, const SVector& InScale);
 
 
 
 	/// Getters
 
 	// Returns this matrix as a transformation.
-	INLINE STransform GetTransform() const;
+	INLINE STransform2 GetTransform() const;
 
 	// Returns this matrix's location.
 	INLINE SVector2 GetLocation() const;
@@ -1310,7 +1315,7 @@ public:
 	// Returns a matrix scaled, rotated and translated by an inputted transformation.
 	// @param Transform - The location, rotation and scale this matrix will be transformed.
 	// @return - The resulting matrix after the transformation.
-	static INLINE SMatrix3 MatrixTransform(const STransform& Transform)
+	static INLINE SMatrix3 MatrixTransform(const STransform2& Transform)
 	{
 		SMatrix3 Result;
 		return Result.ToTransform(Transform);
@@ -1322,7 +1327,7 @@ public:
 	// @param Rotation - The rotation to be rotated in.
 	// @param InScale - The scale to be scaled in.
 	// @return - The resulting matrix after the transformation.
-	static INLINE SMatrix3 MatrixTransform(const SVector& Location, const SQuaternion& Rotation, const SVector& Scale)
+	static INLINE SMatrix3 MatrixTransform(const SVector& Location, const float& Rotation, const SVector& Scale)
 	{
 		SMatrix3 Result;
 		return Result.ToTransform(Location, Rotation, Scale);
@@ -1332,17 +1337,23 @@ public:
 
 INLINE SMatrix3::SMatrix3(SMatrix<3, 3, float> Other)
 {
-	*this = Other;
+	for (uint y = 0; y < 3; ++y)
+	{
+		for (uint x = 0; x < 3; ++x)
+		{
+			Data[y][x] = Other[y][x];
+		}
+	}
 }
 
 
-INLINE SMatrix3::SMatrix3(STransform Transform)
+INLINE SMatrix3::SMatrix3(STransform2 Transform)
 {
 	ToTransform(Transform);
 }
 
 
-INLINE SMatrix3::SMatrix3(SVector Location, SQuaternion Rotation, SVector Scale)
+INLINE SMatrix3::SMatrix3(SVector Location, float Rotation, SVector Scale)
 {
 	ToTransform(Location, Rotation, Scale);
 }
@@ -1396,10 +1407,7 @@ INLINE SMatrix3 SMatrix3::SetTranslate(const float& X, const float& Y, const flo
 INLINE SMatrix3 SMatrix3::ToTranslation(const SVector& Translation)
 {
 	Identity();
-	for (uint i = 0; i < GetRowCount(); ++i)
-	{
-		Data[i][2] = Translation[i];
-	}
+	Data[2] = Translation;
 	return *this;
 }
 
@@ -1538,41 +1546,41 @@ INLINE SMatrix3 SMatrix3::ToScale(const float& X, const float& Y)
 }
 
 
-INLINE SMatrix3 SMatrix3::Transform(const STransform& InTransform) const
+INLINE SMatrix3 SMatrix3::Transform(const STransform2& InTransform) const
 {
-	SMatrix3 Result{ Scale(InTransform.Scale) * Rotate(InTransform.Rotation.Z) * Translate(InTransform.Location) };
+	SMatrix3 Result{ Scale(InTransform.Scale) * Rotate(InTransform.Rotation) * Translate(InTransform.Location) };
 	return *this * Result;
 }
 
 
-INLINE SMatrix3 SMatrix3::Transform(const SVector& Location, const SQuaternion& Rotation, const SVector& InScale) const
+INLINE SMatrix3 SMatrix3::Transform(const SVector& Location, const float& Rotation, const SVector& InScale) const
 {
-	return Transform(STransform{ Location, Rotation, InScale });
+	return Transform(STransform2{ Location, Rotation, InScale });
 }
 
 
-INLINE SMatrix3 SMatrix3::SetTransform(const STransform& InTransform)
+INLINE SMatrix3 SMatrix3::SetTransform(const STransform2& InTransform)
 {
 	*this = Transform(InTransform);
 	return *this;
 }
 
 
-INLINE SMatrix3 SMatrix3::SetTransform(const SVector& Location, const SQuaternion& Rotation, const SVector& InScale)
+INLINE SMatrix3 SMatrix3::SetTransform(const SVector& Location, const float& Rotation, const SVector& InScale)
 {
 	*this = Transform(Location, Rotation, InScale);
 	return *this;
 }
 
 
-INLINE SMatrix3 SMatrix3::ToTransform(const STransform& NewTransform)
+INLINE SMatrix3 SMatrix3::ToTransform(const STransform2& NewTransform)
 {
 	SMatrix3 TranslateMat;
 	SMatrix3 RotationMat;
 	SMatrix3 ScaleMat;
 
 	TranslateMat.ToTranslation(NewTransform.Location);
-	RotationMat.ToRotation(NewTransform.Rotation.Z);
+	RotationMat.ToRotation(NewTransform.Rotation);
 	ScaleMat.ToScale(NewTransform.Scale);
 
 	*this = ScaleMat * RotationMat * TranslateMat;
@@ -1580,49 +1588,56 @@ INLINE SMatrix3 SMatrix3::ToTransform(const STransform& NewTransform)
 }
 
 
-INLINE SMatrix3 SMatrix3::ToTransform(const SVector& Location, const SQuaternion& Rotation, const SVector& InScale)
+INLINE SMatrix3 SMatrix3::ToTransform(const SVector& Location, const float& Rotation, const SVector& InScale)
 {
-	return ToTransform(STransform{ Location, Rotation, InScale });
+	return ToTransform(STransform2{ Location, Rotation, InScale });
 }
 
 
-INLINE STransform SMatrix3::GetTransform() const
+INLINE STransform2 SMatrix3::GetTransform() const
 {
-	return STransform{ GetLocation(), GetRotation(), GetScale() };
+	return STransform2{ GetLocation(), GetRotation(), GetScale() };
 }
 
 
 INLINE SVector2 SMatrix3::GetLocation() const
 {
-	return GetColumn(2);
+	return Data[2];
 }
 
 
 INLINE float SMatrix3::GetRotation() const
 {
-	float Result{ 0.0f };
-	Result = TMath::ACos(Data[0][0]);
-	Result *= TMath::ASin(Data[0][1]);
-	Result *= -TMath::ASin(Data[1][0]);
-	Result *= TMath::ACos(Data[1][1]);
-	return Result;
+	//float Result{ 0.0f };
+	//Result = TMath::ACos(Data[0][0]);
+	//Result *= TMath::ASin(Data[0][1]);
+	//Result *= -TMath::ASin(Data[1][0]);
+	//Result *= TMath::ACos(Data[1][1]);
+	//return Result;
 
-	//float R22{ Data[2][2] };
-	//float Sum10 = Data[1][1] + Data[0][0];
-	//float Opr22 = 1.0f + R22;
-	//if (Sum10 <= 0.0f)
-	//{
-	//	float FourZSqr = Opr22 - Sum10;
-	//	float Inv4z = 0.5f / TMath::Sqrt(FourZSqr);
-	//	return FourZSqr * Inv4z;
-	//}
-	//else
-	//{
-	//	float FourWSqr = Opr22 + Sum10;
-	//	float Inv4w = 0.5f / TMath::Sqrt(FourWSqr);
-	//	return (Data[0][1] - Data[1][0]) * Inv4w;
-	//}
-	
+	SVector2 Scale{ GetScale() };
+	SMatrix3 Mat{ *this };
+
+	for (uint i = 0; i < Scale.GetVectorSize(); ++i)
+	{
+		Mat[i] /= Scale;
+	}
+
+	float R22{ Mat[2][2] };
+	float Sum10 = Mat[1][1] + Mat[0][0];
+	float Opr22 = 1.0f + R22;
+	if (Sum10 <= 0.0f)
+	{
+		float FourZSqr = Opr22 - Sum10;
+		float Inv4z = 0.5f / TMath::Sqrt(FourZSqr);
+		return FourZSqr * Inv4z;
+	}
+	else
+	{
+		float FourWSqr = Opr22 + Sum10;
+		float Inv4w = 0.5f / TMath::Sqrt(FourWSqr);
+		return (Mat[0][1] - Mat[1][0]) * Inv4w;
+	}
 }
 
 
@@ -2491,10 +2506,7 @@ INLINE SMatrix4 SMatrix4::SetTranslate(const float& X, const float& Y, const flo
 INLINE SMatrix4 SMatrix4::ToTranslation(const SVector4& Translation)
 {
 	Identity();
-	for (uint i = 0; i < GetRowCount(); ++i)
-	{
-		Data[i][3] = Translation[i];
-	}
+	Data[3] = Translation;
 	return *this;
 }
 
@@ -2899,7 +2911,7 @@ INLINE SMatrix4 SMatrix4::Merge(SMatrix4 Mat)
 
 INLINE SVector SMatrix4::GetLocation() const
 {
-	return GetColumn(3);
+	return Data[3];
 }
 
 

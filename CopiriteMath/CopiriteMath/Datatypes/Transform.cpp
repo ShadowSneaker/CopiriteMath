@@ -1,4 +1,5 @@
 #include "Transform.h"
+#include "Matrix.h"
 
 
 STransform::STransform(const SVector InLocation, const SQuaternion InRotation, const SVector InScale)
@@ -17,35 +18,64 @@ STransform::~STransform()
 }
 
 
-inline void STransform::RemoveFromParent()
+STransform STransform::GetWorldTransform() const
 {
-	if (Parent)
-	{
-		for (uint i = 0; i < Parent->GetChildren().size(); ++i)
-		{
-			if (Parent->GetChildren()[i] == this)
-			{
-				Parent->GetChildren().erase(Parent->GetChildren().begin() + i);
-				return;
-			}
-		}
+	SMatrix4 ParentMat;
+	ParentMat.Identity();
+	if (Parent) ParentMat = Parent->GetWorldTransform();
 
-		Parent = nullptr;
-	}
+	SMatrix4 ScaleMat;
+	SMatrix4 RotationMat;
+	SMatrix4 LocationMat;
+
+	ScaleMat.ToScale(Scale);
+	RotationMat.ToRotation(Rotation);
+	LocationMat.ToTranslation(Location);
+
+	SMatrix4 Local{ ScaleMat * RotationMat * LocationMat };
+	Local = ParentMat * Local;
+
+	//return Local.GetTransform();
+	STransform Result{ Local.GetTransform() };
+	Result.Rotation = GetWorldRotation();
+	return Result;
 }
 
 
-inline void STransform::SetParent(STransform* Transform)
+STransform2::STransform2(const SVector2& InLocation, const float& InRotation, const SVector2& InScale)
+	:Location{ InLocation }, Rotation{ InRotation }, Scale{ InScale }
+{}
+
+
+STransform2::~STransform2()
 {
-	// Make sure children don't snap to the local position of their new parent
-	// but instead retain the same location in worldspace, but change their local position.
+	for (uint i = 0; i < Children.size(); ++i)
+	{
+		Children[i]->SetParent(Parent);
+	}
 
 	RemoveFromParent();
-	Parent = Transform;
+}
 
-	// Add a reference to the parent of this instance.
-	if (Parent)
-	{
-		Parent->GetChildren().push_back(this);
-	}
+
+STransform2 STransform2::GetWorldTransform() const
+{
+	SMatrix3 ParentMat;
+	ParentMat.Identity();
+	if (Parent) ParentMat = Parent->GetWorldTransform();
+
+	SMatrix3 ScaleMat;
+	SMatrix3 RotationMat;
+	SMatrix3 LocationMat;
+
+	ScaleMat.ToScale(Scale);
+	RotationMat.ToRotation(Rotation);
+	LocationMat.ToTranslation(Location);
+
+	SMatrix3 Local{ ScaleMat * RotationMat * LocationMat };
+	SMatrix3 World{ ParentMat * Local };
+
+	STransform2 Transform{ World.GetTransform() };
+	Transform.Rotation = GetWorldRotation();
+	return Transform;
 }
