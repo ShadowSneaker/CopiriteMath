@@ -1901,7 +1901,7 @@ public:
 	// @note - This assumes the input is in Radians.
 	// @param Rotation - The rotations in the X, Y and Z axis' to rotate.
 	// @return - The resulting matrix from the rotation.
-	INLINE SMatrix4 SetRotate(const SQuaternion& Rotation);
+	INLINE SMatrix4 SetRotate(const float& Angle, const SVector& Vector);
 
 	// Rotates this matrix along all axis and returns the result and sets this matrix to the resulting matrix.
 	// @note - This assumes the input is in Radians.
@@ -2074,22 +2074,22 @@ public:
 
 	/// Statics
 
-	// 
-	// @param FovAngleY - 
-	// @param AspectRatio - 
+	// Calculates the perspective of the world (uses the left handed system).
+	// @param FovAngleY - The y component of the field of view.
+	// @param AspectRatio - The aspect ratio of the window.
 	// @param NearZ - The near clip plane.
 	// @param FarZ - The far clip plane.
-	// @return - 
-	static INLINE SMatrix4 PerspectiveFOV(float FovAngleY, float AspectRatio, float NearZ, float FarZ)
+	// @return - Returns the perspective matrix.
+	static INLINE SMatrix4 PerspectiveLH(float FovY, float AspectRatio, float NearZ, float FarZ)
 	{
 		assert(NearZ > 0.0f && FarZ > 0.0f);
-		assert(!TMath::ScalarNearEqual(FovAngleY, 0.0f, 0.00001f * 2.0f));
+		assert(!TMath::ScalarNearEqual(FovY, 0.0f, 0.00001f * 2.0f));
 		assert(!TMath::ScalarNearEqual(AspectRatio, 0.0f, 0.00001f));
 		assert(!TMath::ScalarNearEqual(FarZ, NearZ, 0.00001f));
 
 		float SinFOV;
 		float CosFOV;
-		TMath::SinCos(&SinFOV, &CosFOV, 0.5f * FovAngleY);
+		TMath::SinCos(&SinFOV, &CosFOV, 0.5f * FovY);
 
 		float Height = CosFOV / SinFOV;
 		float Width = Height / AspectRatio;
@@ -2106,15 +2106,58 @@ public:
 	}
 
 
+	// Calculates the perspective matrix of the world (uses the right handed system).
+	// @param FovAngleY - The y component of the field of view.
+	// @param AspectRatio - The aspect ratio of the window.
+	// @param NearZ - The near clip plane.
+	// @param FarZ - The far clip plane.
+	// @return - Returns the perspective matrix.
+	static INLINE SMatrix4 PerspectiveRH(float FovY, float AspectRatio, float NearZ, float FarZ)
+	{
+		assert(NearZ > 0.0f && FarZ > 0.0f);
+		assert(!TMath::ScalarNearEqual(FovY, 0.0f, 0.00001f * 2.0f));
+		assert(!TMath::ScalarNearEqual(AspectRatio, 0.0f, 0.00001f));
+		assert(!TMath::ScalarNearEqual(FarZ, NearZ, 0.00001f));
+
+		float SinFOV;
+		float CosFOV;
+		TMath::SinCos(&SinFOV, &CosFOV, 0.5f * FovY);
+
+		float Height = CosFOV / SinFOV;
+		float Width = Height / AspectRatio;
+		float FRange = FarZ / (NearZ - FarZ);
+
+		SMatrix4 Result{ 0.0f };
+		Result[0][0] = Width;
+		Result[1][1] = Height;
+		Result[2][2] = FRange;
+		Result[2][3] = -1.0f;
+		Result[3][2] = FRange * NearZ;
+		return Result;
+	}
+
+
 	// 
 	// @param EyePosition - 
 	// @param FocusPosition - 
 	// @param UpDirection - 
-	// @return - 
-	static INLINE SMatrix4 LookAt(SVector4 EyePosition, SVector4 FocusPosition, SVector4 UpDirection)
+	// @return - Returns the view matrix.
+	static INLINE SMatrix4 LookAtLH(SVector4 EyePosition, SVector4 FocusPosition, SVector4 UpDirection)
 	{
 		SVector4 EyeDirection{ FocusPosition - EyePosition };
-		return LookTo(EyePosition, EyeDirection, UpDirection);
+		return LookToLH(EyePosition, EyeDirection, UpDirection);
+	}
+
+
+	// 
+	// @param EyePosition - 
+	// @param FocusPosition - 
+	// @param UpDirection - 
+	// @return - Returns the view matrix.
+	static INLINE SMatrix4 LookAtRH(SVector3 EyePosition, SVector3 FocusPosition, SVector3 UpDirection)
+	{
+		SVector4 EyeDirection{ EyePosition - FocusPosition};
+		return LookToLH(EyePosition, EyeDirection, UpDirection);
 	}
 
 
@@ -2123,7 +2166,7 @@ public:
 	// @param EyeDirection - 
 	// @param UpDirection - 
 	// @return - 
-	static INLINE SMatrix4 LookTo(SVector4 EyePosition, SVector4 EyeDirection, SVector4 UpDirection)
+	static INLINE SMatrix4 LookToLH(SVector4 EyePosition, SVector4 EyeDirection, SVector4 UpDirection)
 	{
 		assert(!(EyeDirection == 0.0f));
 		assert(!(UpDirection == 0.0f));
@@ -2150,6 +2193,17 @@ public:
 
 		Mat.Merge(Mat);
 		return Mat;
+	}
+
+
+	// 
+	// @param EyePosition - 
+	// @param EyeDirection - 
+	// @param UpDirection - 
+	// @return - 
+	static INLINE SMatrix4 LookToRH(SVector4 EyePosition, SVector4 EyeDirection, SVector4 UpDirection)
+	{
+		return SMatrix4::LookToLH(EyePosition, -EyeDirection, UpDirection);
 	}
 
 
@@ -2705,9 +2759,36 @@ INLINE SMatrix4 SMatrix4::Rotate(const float& Pitch, const float& Yaw, const flo
 }
 
 
-INLINE SMatrix4 SMatrix4::SetRotate(const SQuaternion& Rotation)
+INLINE SMatrix4 SMatrix4::SetRotate(const float& Angle, const SVector& Vector)
 {
-	*this = Rotate(Rotation);
+	//*this = Rotate(Rotation);
+	Identity();
+	const float C{ TMath::Cos(Angle) }; // is 1
+	const float S{ TMath::Sin(Angle) }; // is 2.1999
+
+	SVector3 Axis(Vector.GetNormal()); // is 0,0,1
+	SVector3 Temp{ (1.0f - C) * Axis }; // is 0,0,0
+
+	SMatrix4 Rot;
+	Rot[0][0] = C + Temp[0] * Axis[0];
+	Rot[0][1] = Temp[0] * Axis[1] + S * Axis[2];
+	Rot[0][2] = Temp[0] * Axis[2] - S * Axis[1];
+
+	Rot[1][0] = Temp[1] * Axis[0] - S * Axis[2];
+	Rot[1][1] = C + Temp[1] * Axis[1];
+	Rot[1][2] = Temp[1] * Axis[2] + S * Axis[0];
+
+	Rot[2][0] = Temp[2] * Axis[0] + S * Axis[1];
+	Rot[2][1] = Temp[2] * Axis[1] - S * Axis[0];
+	Rot[2][2] = C + Temp[2] * Axis[2];
+
+	SMatrix4 Result;
+	Result[0] = Data[0] * Rot[0][0] + Data[1] * Rot[0][1] + Data[2] * Rot[0][2];
+	Result[1] = Data[0] * Rot[1][0] + Data[1] * Rot[1][1] + Data[2] * Rot[1][2];
+	Result[2] = Data[0] * Rot[2][0] + Data[1] * Rot[2][1] + Data[2] * Rot[2][2];
+	Result[3] = Data[3];
+
+	*this = Result;
 	return *this;
 }
 

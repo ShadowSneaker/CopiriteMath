@@ -87,10 +87,10 @@ public:
 	INLINE SQuaternion GetRotation() const { return Rotation; }
 
 	// Gets the relative scale of this object.
-	INLINE SVector GetScale() const { return Scale; }
+	SVector GetScale() const;
 
 	// Gets the location, rotation and scale of this object in worldspace.
-	STransform GetWorldTransform() const;
+	 STransform GetWorldTransform() const;
 
 	// Gets the location of this object in worldspace.
 	INLINE SVector GetWorldLocation() const { return ((Parent) ? Parent->GetWorldLocation() : SVector{ 0.0f }) + Location; }

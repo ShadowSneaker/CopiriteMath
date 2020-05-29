@@ -156,6 +156,7 @@
     <ClInclude Include="Datatypes\Quaternion.h" />
     <ClInclude Include="Datatypes\Transform.h" />
     <ClInclude Include="Datatypes\Vector.h" />
+    <ClInclude Include="Datatypes\VectorConversions.h" />
     <ClInclude Include="MathGlobals.h" />
     <ClInclude Include="Math.h" />
     <ClInclude Include="Statics\MathCore.h" />

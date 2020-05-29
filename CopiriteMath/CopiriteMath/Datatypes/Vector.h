@@ -2253,7 +2253,7 @@ INLINE STVector<Size, Type> STVector<Size, Type>::Select(STVector<Size, Type> V1
 template <uint Size, typename Type>
 INLINE STVector<4, Type> STVector<Size, Type>::Merge(STVector<4, Type> V1, STVector<4, Type> V2, EAxis A, EAxis B)
 {
-	STVector<4, Type> Result{ V1[A], V2[A], V1[A], V2[B] };
+	STVector<4, Type> Result{ V1[A], V2[B], V1[A], V2[B] };
 	Result.CheckNaN();
 	return Result;
 }

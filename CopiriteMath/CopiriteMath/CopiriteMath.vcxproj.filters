@@ -51,6 +51,9 @@
     <ClInclude Include="Statics\Random.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Datatypes\VectorConversions.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Math.cpp">
